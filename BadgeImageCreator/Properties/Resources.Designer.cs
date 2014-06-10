@@ -59,15 +59,5 @@ namespace BadgeImageCreator.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap Mouse_Flower {
-            get {
-                object obj = ResourceManager.GetObject("Mouse Flower", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
     }
 }

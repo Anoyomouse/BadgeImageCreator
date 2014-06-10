@@ -19,12 +19,42 @@ namespace BadgeImageCreator
 
 		private void cmdProcess_Click(object sender, EventArgs e)
 		{
+			if (!_placed)
+			{
+				return;
+			}
+
 			Bitmap b = new Bitmap(pbSource.Width, pbSource.Height);
 			Graphics g = Graphics.FromImage(b);
-			g.DrawImage(pbSource.Image, new Rectangle(0,0,pbSource.Width, pbSource.Height));
+			g.DrawImage(pcFullImage.Image, new Rectangle(0, 0, pbSource.Width, pbSource.Height), _selection.X, _selection.Y, _selection.Width, _selection.Height, GraphicsUnit.Pixel);
 			g.Dispose();
 
+			var sc = new SaturationCorrection();
+			sc.AdjustValue = hsbSaturation.Value / 100.0f;
+			// apply the filter
+			sc.ApplyInPlace(b);
+
+			var hf = new HistogramEqualization();
+
+			if (chkHF1.Checked)
+				hf.ApplyInPlace(b);
+
+			pbSource.Image = b;
+
 			var greyb = AForge.Imaging.Filters.Grayscale.CommonAlgorithms.BT709.Apply(b);
+
+			if (chkHF2.Checked)
+				hf.ApplyInPlace(greyb);
+
+			var bc = new BrightnessCorrection();
+			bc.AdjustValue = hsbBrightness.Value;
+			bc.ApplyInPlace(greyb);
+
+			var cc = new ContrastCorrection();
+			cc.Factor = hsbContrast.Value;
+			cc.ApplyInPlace(greyb);
+
+
 			pbInt.Image = greyb;
 
 			//BaseInPlacePartialFilter filter = new AForge.Imaging.Filters.FloydSteinbergDithering();
@@ -139,7 +169,14 @@ namespace BadgeImageCreator
 						{
 							_state = BoxState.Resizing;
 							_box_flags = resizeMask;
-		
+
+							int x = e.X, y = e.Y;
+							if ((_box_flags | BoxFlags.Right) == BoxFlags.Right)
+								x = (_selection.X + _selection.Width) - e.X;
+							if ((_box_flags | BoxFlags.Bottom) == BoxFlags.Bottom)
+								y = (_selection.Y + _selection.Height) - e.Y;
+
+							_movement_point = new Point(x,y);
 							this.Text = string.Format("MouseDown({0}, {1}, {2})", e.X, e.Y, _state);
 						}
 					}
@@ -176,6 +213,17 @@ namespace BadgeImageCreator
 				_selection.Y = e.Y - _movement_point.Y;
 
 				pcFullImage.Refresh();
+			}
+			else if (_state == BoxState.Resizing)
+			{
+				if ((_box_flags | BoxFlags.Right) == BoxFlags.Right)
+				{
+					_selection.Width = e.X + _movement_point.X;
+				}
+				if ((_box_flags | BoxFlags.Bottom) == BoxFlags.Bottom)
+				{
+					_selection.Width = e.Y + _movement_point.Y;
+				}
 			}
 
 			if (_state == BoxState.None)
@@ -216,12 +264,7 @@ namespace BadgeImageCreator
 
 			if (_state != BoxState.None)
 			{
-				Bitmap b = new Bitmap(pbSource.Width, pbSource.Height);
-				Graphics g = Graphics.FromImage(b);
-				g.DrawImage(pcFullImage.Image, new Rectangle(0, 0, pbSource.Width, pbSource.Height), _selection.X, _selection.Y, _selection.Width, _selection.Height, GraphicsUnit.Pixel);
-				g.Dispose();
-
-				pbSource.Image = b;
+				cmdProcess.PerformClick();
 			}
 
 			if (_state != BoxState.None)
@@ -242,6 +285,11 @@ namespace BadgeImageCreator
 			{
 				e.Graphics.DrawRectangle(Pens.LimeGreen, _movement_point.X - 2, _movement_point.Y - 2, 4, 4);
 			}
+		}
+
+		private void RefreshImage(object sender, EventArgs e)
+		{
+			cmdProcess.PerformClick();
 		}
 	}
 
