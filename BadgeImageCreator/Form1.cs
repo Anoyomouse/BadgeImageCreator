@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows.Forms;
 using AForge.Imaging;
 using AForge.Imaging.Filters;
+using System.IO;
 
 namespace BadgeImageCreator
 {
@@ -290,6 +291,21 @@ namespace BadgeImageCreator
 		private void RefreshImage(object sender, EventArgs e)
 		{
 			cmdProcess.PerformClick();
+		}
+
+		private void cmdOpen_Click(object sender, EventArgs e)
+		{
+			if (ofdImage.ShowDialog() != DialogResult.OK)
+			{
+				return;
+			}
+
+			var file = new FileInfo(ofdImage.FileName);
+			if (file.Exists)
+			{
+				pcFullImage.Image = System.Drawing.Image.FromFile(file.FullName);
+				cmdProcess.PerformClick();
+			}
 		}
 	}
 

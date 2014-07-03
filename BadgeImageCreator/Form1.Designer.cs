@@ -40,6 +40,8 @@
 			this.hsbSaturation = new System.Windows.Forms.HScrollBar();
 			this.chkHF1 = new System.Windows.Forms.CheckBox();
 			this.chkHF2 = new System.Windows.Forms.CheckBox();
+			this.cmdOpen = new System.Windows.Forms.Button();
+			this.ofdImage = new System.Windows.Forms.OpenFileDialog();
 			this.panel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pcFullImage)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pbInt)).BeginInit();
@@ -165,11 +167,27 @@
 			this.chkHF2.UseVisualStyleBackColor = true;
 			this.chkHF2.CheckedChanged += new System.EventHandler(this.RefreshImage);
 			// 
+			// cmdOpen
+			// 
+			this.cmdOpen.Location = new System.Drawing.Point(213, 195);
+			this.cmdOpen.Name = "cmdOpen";
+			this.cmdOpen.Size = new System.Drawing.Size(81, 23);
+			this.cmdOpen.TabIndex = 9;
+			this.cmdOpen.Text = "Open";
+			this.cmdOpen.UseVisualStyleBackColor = true;
+			this.cmdOpen.Click += new System.EventHandler(this.cmdOpen_Click);
+			// 
+			// ofdImage
+			// 
+			this.ofdImage.DefaultExt = "png";
+			this.ofdImage.Filter = "Image Files|*.bmp;*.jpg;*.jpeg;*.gif;*.png|All files|*.*";
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(833, 727);
+			this.Controls.Add(this.cmdOpen);
 			this.Controls.Add(this.chkHF2);
 			this.Controls.Add(this.chkHF1);
 			this.Controls.Add(this.hsbSaturation);
@@ -206,6 +224,8 @@
 		private System.Windows.Forms.HScrollBar hsbSaturation;
 		private System.Windows.Forms.CheckBox chkHF1;
 		private System.Windows.Forms.CheckBox chkHF2;
+		private System.Windows.Forms.Button cmdOpen;
+		private System.Windows.Forms.OpenFileDialog ofdImage;
 	}
 }
 
