@@ -59,13 +59,23 @@ namespace BadgeImageCreator
 			pbInt.Image = greyb;
 
 			//BaseInPlacePartialFilter filter = new AForge.Imaging.Filters.FloydSteinbergDithering();
-			BaseInPlacePartialFilter filter = new AForge.Imaging.Filters.SierraDithering();
+			BaseInPlacePartialFilter filter = null;
+
+			if (cmbAlgorithm.SelectedItem != null && cmbAlgorithm.SelectedItem is AForge.Imaging.Filters.BaseInPlacePartialFilter)
+			{
+				filter = cmbAlgorithm.SelectedItem as AForge.Imaging.Filters.BaseInPlacePartialFilter;
+			}
+			
+			if (filter == null)
+			{
+				filter = new AForge.Imaging.Filters.SierraDithering();
+			}
 
 			var ditheredb = filter.Apply(greyb);
 			pbDest.Image = ditheredb;
 		}
 
-		private void DitheringModes()
+		private void LoadDitheringModes()
 		{
 			List<BaseInPlacePartialFilter> filters = new List<BaseInPlacePartialFilter>();
 			
@@ -74,16 +84,10 @@ namespace BadgeImageCreator
 			filters.Add(new JarvisJudiceNinkeDithering());
 			filters.Add(new SierraDithering());
 			filters.Add(new StuckiDithering());
-		}
 
-		private void rectangleShape1_Click(object sender, EventArgs e)
-		{
-
-		}
-
-		private void pcFullImage_Click(object sender, EventArgs e)
-		{
-
+			cmbAlgorithm.Items.Clear();
+			cmbAlgorithm.Items.AddRange(filters.ToArray());
+			cmbAlgorithm.SelectedIndex = 0;
 		}
 
 		private int BoxWidth = 4;
@@ -305,6 +309,30 @@ namespace BadgeImageCreator
 			{
 				pcFullImage.Image = System.Drawing.Image.FromFile(file.FullName);
 				cmdProcess.PerformClick();
+			}
+		}
+
+		private void Form1_Load(object sender, EventArgs e)
+		{
+			LoadDitheringModes();
+		}
+
+		private void cmbAlgorithm_SelectionChangeCommitted(object sender, EventArgs e)
+		{
+			cmdProcess.PerformClick();
+		}
+
+		private void pbDest_Click(object sender, EventArgs e)
+		{
+			if (sfdResult.ShowDialog(this) == DialogResult.OK)
+			{
+				var file = new FileInfo(sfdResult.FileName);
+				if (file.Exists)
+				{
+					file.Delete();
+				}
+
+				pbDest.Image.Save(file.FullName, System.Drawing.Imaging.ImageFormat.Png);
 			}
 		}
 	}

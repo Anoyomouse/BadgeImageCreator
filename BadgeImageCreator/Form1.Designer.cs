@@ -42,6 +42,11 @@
 			this.chkHF2 = new System.Windows.Forms.CheckBox();
 			this.cmdOpen = new System.Windows.Forms.Button();
 			this.ofdImage = new System.Windows.Forms.OpenFileDialog();
+			this.label1 = new System.Windows.Forms.Label();
+			this.label2 = new System.Windows.Forms.Label();
+			this.label3 = new System.Windows.Forms.Label();
+			this.cmbAlgorithm = new System.Windows.Forms.ComboBox();
+			this.sfdResult = new System.Windows.Forms.SaveFileDialog();
 			this.panel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pcFullImage)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pbInt)).BeginInit();
@@ -64,9 +69,9 @@
 			this.panel1.AutoScroll = true;
 			this.panel1.BackColor = System.Drawing.Color.Transparent;
 			this.panel1.Controls.Add(this.pcFullImage);
-			this.panel1.Location = new System.Drawing.Point(12, 233);
+			this.panel1.Location = new System.Drawing.Point(10, 276);
 			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(804, 489);
+			this.panel1.Size = new System.Drawing.Size(811, 439);
 			this.panel1.TabIndex = 4;
 			// 
 			// pcFullImage
@@ -79,7 +84,6 @@
 			this.pcFullImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
 			this.pcFullImage.TabIndex = 3;
 			this.pcFullImage.TabStop = false;
-			this.pcFullImage.Click += new System.EventHandler(this.pcFullImage_Click);
 			this.pcFullImage.Paint += new System.Windows.Forms.PaintEventHandler(this.pcFullImage_Paint);
 			this.pcFullImage.MouseDown += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseDown);
 			this.pcFullImage.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pictureBox1_MouseMove);
@@ -104,6 +108,7 @@
 			this.pbDest.Size = new System.Drawing.Size(265, 177);
 			this.pbDest.TabIndex = 3;
 			this.pbDest.TabStop = false;
+			this.pbDest.Click += new System.EventHandler(this.pbDest_Click);
 			// 
 			// pbSource
 			// 
@@ -118,7 +123,7 @@
 			// 
 			// hsbContrast
 			// 
-			this.hsbContrast.Location = new System.Drawing.Point(318, 198);
+			this.hsbContrast.Location = new System.Drawing.Point(318, 209);
 			this.hsbContrast.Maximum = 127;
 			this.hsbContrast.Minimum = -127;
 			this.hsbContrast.Name = "hsbContrast";
@@ -128,7 +133,7 @@
 			// 
 			// hsbBrightness
 			// 
-			this.hsbBrightness.Location = new System.Drawing.Point(493, 198);
+			this.hsbBrightness.Location = new System.Drawing.Point(493, 209);
 			this.hsbBrightness.Maximum = 255;
 			this.hsbBrightness.Minimum = -255;
 			this.hsbBrightness.Name = "hsbBrightness";
@@ -138,7 +143,7 @@
 			// 
 			// hsbSaturation
 			// 
-			this.hsbSaturation.Location = new System.Drawing.Point(650, 198);
+			this.hsbSaturation.Location = new System.Drawing.Point(650, 209);
 			this.hsbSaturation.Minimum = -100;
 			this.hsbSaturation.Name = "hsbSaturation";
 			this.hsbSaturation.Size = new System.Drawing.Size(157, 20);
@@ -182,11 +187,58 @@
 			this.ofdImage.DefaultExt = "png";
 			this.ofdImage.Filter = "Image Files|*.bmp;*.jpg;*.jpeg;*.gif;*.png|All files|*.*";
 			// 
+			// label1
+			// 
+			this.label1.AutoSize = true;
+			this.label1.Location = new System.Drawing.Point(318, 193);
+			this.label1.Name = "label1";
+			this.label1.Size = new System.Drawing.Size(46, 13);
+			this.label1.TabIndex = 10;
+			this.label1.Text = "Contrast";
+			// 
+			// label2
+			// 
+			this.label2.AutoSize = true;
+			this.label2.Location = new System.Drawing.Point(490, 198);
+			this.label2.Name = "label2";
+			this.label2.Size = new System.Drawing.Size(56, 13);
+			this.label2.TabIndex = 10;
+			this.label2.Text = "Brightness";
+			// 
+			// label3
+			// 
+			this.label3.AutoSize = true;
+			this.label3.Location = new System.Drawing.Point(653, 196);
+			this.label3.Name = "label3";
+			this.label3.Size = new System.Drawing.Size(55, 13);
+			this.label3.TabIndex = 10;
+			this.label3.Text = "Saturation";
+			// 
+			// cmbAlgorithm
+			// 
+			this.cmbAlgorithm.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.cmbAlgorithm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cmbAlgorithm.FormattingEnabled = true;
+			this.cmbAlgorithm.Location = new System.Drawing.Point(317, 243);
+			this.cmbAlgorithm.Name = "cmbAlgorithm";
+			this.cmbAlgorithm.Size = new System.Drawing.Size(157, 21);
+			this.cmbAlgorithm.TabIndex = 11;
+			this.cmbAlgorithm.SelectionChangeCommitted += new System.EventHandler(this.cmbAlgorithm_SelectionChangeCommitted);
+			// 
+			// sfdResult
+			// 
+			this.sfdResult.DefaultExt = "PNG";
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(833, 727);
+			this.Controls.Add(this.cmbAlgorithm);
+			this.Controls.Add(this.label3);
+			this.Controls.Add(this.label2);
+			this.Controls.Add(this.label1);
 			this.Controls.Add(this.cmdOpen);
 			this.Controls.Add(this.chkHF2);
 			this.Controls.Add(this.chkHF1);
@@ -200,6 +252,7 @@
 			this.Controls.Add(this.cmdProcess);
 			this.Name = "Form1";
 			this.Text = "Form1";
+			this.Load += new System.EventHandler(this.Form1_Load);
 			this.panel1.ResumeLayout(false);
 			this.panel1.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pcFullImage)).EndInit();
@@ -226,6 +279,11 @@
 		private System.Windows.Forms.CheckBox chkHF2;
 		private System.Windows.Forms.Button cmdOpen;
 		private System.Windows.Forms.OpenFileDialog ofdImage;
+		private System.Windows.Forms.Label label1;
+		private System.Windows.Forms.Label label2;
+		private System.Windows.Forms.Label label3;
+		private System.Windows.Forms.ComboBox cmbAlgorithm;
+		private System.Windows.Forms.SaveFileDialog sfdResult;
 	}
 }
 
