@@ -36,7 +36,7 @@ namespace BadgeImageCreator
 			sc.ApplyInPlace(b);
 
 			var hf = new HistogramEqualization();
-
+			
 			if (chkHF1.Checked)
 				hf.ApplyInPlace(b);
 
@@ -286,9 +286,9 @@ namespace BadgeImageCreator
 			Pen pen = Pens.GreenYellow;
 			e.Graphics.DrawRectangle(pen, _selection);
 
-			if (_state == BoxState.Moving)
+			if (_state != BoxState.None)
 			{
-				e.Graphics.DrawRectangle(Pens.LimeGreen, _movement_point.X - 2, _movement_point.Y - 2, 4, 4);
+				e.Graphics.DrawRectangle(Pens.LimeGreen, _selection.X + _movement_point.X - 2, _selection.Y + _movement_point.Y - 2, 4, 4);
 			}
 		}
 
@@ -334,6 +334,80 @@ namespace BadgeImageCreator
 
 				pbDest.Image.Save(file.FullName, System.Drawing.Imaging.ImageFormat.Png);
 			}
+		}
+
+		private void SaveImageToWif()
+		{
+			sfdResult.DefaultExt = ".WIF";
+			if (sfdResult.ShowDialog(this) == DialogResult.OK)
+			{
+				var file = new FileInfo(sfdResult.FileName);
+				if (file.Exists)
+				{
+					file.Delete();
+				}
+
+				Bitmap bitmap = pbDest.Image as Bitmap;
+				var fileStream = new BinaryWriter(file.OpenWrite());
+
+				short width = 264, height = 176;
+
+				fileStream.Write(width);
+				fileStream.Write(height);
+				for (int j = 0; j < height; j ++)
+				{
+					for (int i = 0; i < width; i += 8)
+					{
+						byte pixelByte = 0;
+						for (int bit_i = 0; bit_i < 8; bit_i ++)
+						{
+							var bit = bitmap.GetPixel(i + bit_i, j) != Color.White;
+							pixelByte |= (byte)((bit ? 1 : 0) << bit_i);
+						}
+						fileStream.Write(pixelByte);
+					}
+					fileStream.Flush();
+				}
+				fileStream.Close();
+			}
+		}
+
+		private Bitmap LoadWifImage()
+		{
+			ofdImage.DefaultExt = ".WIF";
+			if (ofdImage.ShowDialog(this) == DialogResult.OK)
+			{
+				var file = new FileInfo(sfdResult.FileName);
+				var fileStream = new BinaryReader(file.OpenRead());
+
+				short width = 264, height = 176;
+
+				width = fileStream.ReadInt16();
+				height = fileStream.ReadInt16();
+
+				Bitmap bitmap = new Bitmap(width, height);
+				Graphics g = Graphics.FromImage(bitmap);
+				g.Clear(Color.White);
+
+				for (int j = 0; j < height; j ++)
+				{
+					for (int i = 0; i < width; i += 8)
+					{
+						byte pixelByte = fileStream.ReadByte();
+						for (int bit_i = 0; bit_i < 8; bit_i ++)
+						{
+							bool bit = (pixelByte & (1 << bit_i)) != 0;
+							if (bit) {
+								bitmap.SetPixel(i + bit_i, j, Color.Black);
+							}
+						}
+					}
+				}
+				fileStream.Close();
+
+				return bitmap;
+			}
+			return null;
 		}
 	}
 
