@@ -16,6 +16,45 @@ namespace BadgeImageCreator
 		public Form1()
 		{
 			InitializeComponent();
+
+			LoadFilters();
+		}
+
+		private void LoadFilters()
+		{
+			List<Type> filterList = new List<Type>();
+			List<string> notSimpleFilter = new List<string>();
+
+			var baseFilterType = typeof(IFilter);
+			var asm = baseFilterType.Assembly;
+			foreach (var type in asm.GetTypes())
+			{
+				if (baseFilterType.IsAssignableFrom(type) ||
+					type.IsSubclassOf(baseFilterType))
+				{
+					var constructor = type.GetConstructor(new Type[] { });
+
+					if (constructor != null)
+					{
+						filterList.Add(type);
+					}
+					else
+					{
+						if (type.IsAbstract ||
+							type.IsInterface)
+						{
+							continue;
+						}
+
+						if (type.Name != "TexturedFilter" &&
+							type.Name != "ImageWarp")
+						{
+							var constructors = type.GetConstructors();
+							notSimpleFilter.Add(string.Format("{0} - {1}", type.Name, constructors[0].ToString()));
+						}
+					}
+				}
+			}
 		}
 
 		private void cmdProcess_Click(object sender, EventArgs e)
