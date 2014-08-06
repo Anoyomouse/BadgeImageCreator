@@ -11,8 +11,10 @@ using System.IO;
 
 namespace BadgeImageCreator
 {
+	/// <summary>Main form for the application</summary>
 	public partial class Form1 : Form
 	{
+		/// <summary>Initializes a new instance of the <see cref="Form1"/> class.</summary>
 		public Form1()
 		{
 			InitializeComponent();
@@ -20,6 +22,7 @@ namespace BadgeImageCreator
 			LoadFilters();
 		}
 
+		/// <summary>Loads the filters.</summary>
 		private void LoadFilters()
 		{
 			List<Type> filterList = new List<Type>();
@@ -57,6 +60,9 @@ namespace BadgeImageCreator
 			}
 		}
 
+		/// <summary>Handles the Click event of the Process button.</summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private void cmdProcess_Click(object sender, EventArgs e)
 		{
 			if (!_placed)
@@ -133,7 +139,6 @@ namespace BadgeImageCreator
 
 		private bool _placed = false;
 		private Rectangle _selection;
-
 		private Point _movement_point;
 
 		private BoxState _state;
@@ -191,6 +196,7 @@ namespace BadgeImageCreator
 				if (!_placed)
 				{
 					_selection = new Rectangle(new Point(e.X, e.Y), new Size());
+					_movement_point = new Point(e.X, e.Y);
 					_placed = true;
 
 					_state = BoxState.Placing;
@@ -220,13 +226,14 @@ namespace BadgeImageCreator
 							if ((_box_flags | BoxFlags.Bottom) == BoxFlags.Bottom)
 								y = (_selection.Y + _selection.Height) - e.Y;
 
-							_movement_point = new Point(x,y);
+							_movement_point = new Point(x, y);
 							this.Text = string.Format("MouseDown({0}, {1}, {2})", e.X, e.Y, _state);
 						}
 					}
 					else
 					{
 						_selection = new Rectangle(new Point(e.X, e.Y), new Size());
+						_movement_point = new Point(e.X, e.Y);
 						_state = BoxState.Placing;
 					}
 				}
@@ -237,37 +244,104 @@ namespace BadgeImageCreator
 
 		private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
 		{
+			float ratiow = 176f / 264f;
+			float ratioh = 264f / 176f;
+
 			// Update the actual size of the selection:
 			if (_state == BoxState.Placing)
 			{
-				float ratiow = 176f / 264f;
 
-				_selection.X = Math.Min(e.X, _selection.X);
+				_selection.X = Math.Min(e.X, _movement_point.X);
+				_selection.Width = Math.Max(e.X, _movement_point.X) - _selection.X;
 
-				_selection.Width = Math.Abs(e.X - _selection.X);
-				_selection.Height = (int)(_selection.Width * ratiow);
+				if (Math.Min(e.Y, _movement_point.Y) == _movement_point.Y)
+				{
+					// _movement_point.Y is top, and it will grow down
+					_selection.Y = _movement_point.Y;
+					_selection.Height = (int)(_selection.Width * ratiow);
+				}
+				else
+				{
+					// _movement_point.Y is bottom, and it will grow up
 
-				// Redraw the picturebox:
-				pcFullImage.Refresh();
+					// Calculate the "top"
+					// First we get the actual height of the box - ratio calculated
+					_selection.Height = (int)(_selection.Width * ratiow);
+
+					// Now we adjust the "top" so the bottom is at _movement_point.Y
+					_selection.Y = _movement_point.Y - _selection.Height;
+				}
 			}
 			else if (_state == BoxState.Moving)
 			{
 				// Get Delta X of movement
 				_selection.X = e.X - _movement_point.X;
 				_selection.Y = e.Y - _movement_point.Y;
-
-				pcFullImage.Refresh();
 			}
 			else if (_state == BoxState.Resizing)
 			{
-				if ((_box_flags | BoxFlags.Right) == BoxFlags.Right)
+				// We have a static point - movement_point, where the resize event started!
+				if (_box_flags.HasFlag(BoxFlags.Right))
 				{
-					_selection.Width = e.X + _movement_point.X;
+					// We need to make the box go from _selection.X -> e.X
+					_selection.Width = e.X - _selection.X;
+					if (_box_flags.HasFlag(BoxFlags.Top))
+					{
+						var bottom = _selection.Y + _selection.Height;
+						_selection.Height = (int)(_selection.Width * ratiow);
+
+						_selection.Y = bottom - _selection.Height;
+					}
+					else
+					{
+						_selection.Height = (int)(_selection.Width * ratiow);
+					}
 				}
-				if ((_box_flags | BoxFlags.Bottom) == BoxFlags.Bottom)
+				else if (_box_flags.HasFlag(BoxFlags.Left))
 				{
-					_selection.Width = e.Y + _movement_point.Y;
+					// We need the box to go from e.X to _selection.X + _selection.Width
+					var right = _selection.X + _selection.Width;
+					_selection.X = e.X;
+					_selection.Width = right - e.X;
+
+					if (_box_flags.HasFlag(BoxFlags.Bottom))
+					{
+						// Top Right should be fixed
+						_selection.Height = (int)(_selection.Width * ratiow);
+					}
+					else
+					{
+						var bottom = _selection.Y + _selection.Height;
+						_selection.Height = (int)(_selection.Width * ratiow);
+
+						_selection.Y = bottom - _selection.Height;
+					}
 				}
+				else if (_box_flags.HasFlag(BoxFlags.Bottom))
+				{
+					// We need the box to go from _selection.Y -> e.Y
+					_selection.Height = e.Y - _selection.Y;
+					_selection.Width = (int)(_selection.Height * ratioh);
+				}
+				else if (_box_flags.HasFlag(BoxFlags.Top))
+				{
+					// We need the box to go from e.Y to _selection.Y + _selection.Height
+					// Will feel more "natural" if we make the left X shrink, unless BoxFlags.Right is set
+					var bottom = _selection.Y + _selection.Height;
+					_selection.Y = e.Y;
+					_selection.Height = bottom - e.Y;
+
+					var right = _selection.X + _selection.Width;
+					var new_width = (int)(_selection.Height * ratioh);
+					_selection.Width = new_width;
+					_selection.X = right - new_width;
+				}
+			}
+
+			if (_state != BoxState.None)
+			{
+				// Redraw the picturebox:
+				pcFullImage.Refresh();
 			}
 
 			if (_state == BoxState.None)
@@ -298,21 +372,9 @@ namespace BadgeImageCreator
 
 		private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
 		{
-			if (_state == BoxState.Placing)
-			{
-				float ratiow = 176f / 264f;
-
-				_selection.Width = e.X - _selection.X;
-				_selection.Height = (int)(_selection.Width * ratiow);
-			}
-
 			if (_state != BoxState.None)
 			{
 				cmdProcess.PerformClick();
-			}
-
-			if (_state != BoxState.None)
-			{
 				_state = BoxState.None;
 			}
 
@@ -327,6 +389,7 @@ namespace BadgeImageCreator
 
 			if (_state != BoxState.None)
 			{
+				e.Graphics.DrawRectangle(Pens.GreenYellow, _movement_point.X - 2, _movement_point.Y - 2, 4, 4);
 				e.Graphics.DrawRectangle(Pens.LimeGreen, _selection.X + _movement_point.X - 2, _selection.Y + _movement_point.Y - 2, 4, 4);
 			}
 		}
