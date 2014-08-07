@@ -12,10 +12,10 @@ using System.IO;
 namespace BadgeImageCreator
 {
 	/// <summary>Main form for the application</summary>
-	public partial class Form1 : Form
+	public partial class frmBadge : Form
 	{
-		/// <summary>Initializes a new instance of the <see cref="Form1"/> class.</summary>
-		public Form1()
+		/// <summary>Initializes a new instance of the <see cref="frmBadge"/> class.</summary>
+		public frmBadge()
 		{
 			InitializeComponent();
 
@@ -186,13 +186,23 @@ namespace BadgeImageCreator
 			cmbAlgorithm.SelectedIndex = 0;
 		}
 
+		/// <summary>How wide is the resizing "box" around the selection rectangle</summary>
 		private int BoxWidth = 4;
+		/// <summary>Has the selection rectangle been placed</summary>
 		private bool _placed = false;
+		/// <summary>The selection rectangle on the main image</summary>
 		private Rectangle _selection;
+		/// <summary>The movement point used in moving, resizing and placing commands, generally mouse start point</summary>
 		private Point _movement_point;
+		/// <summary>The box placement/moving/resizing state</summary>
 		private BoxState _state;
+		/// <summary>The box flags to indicate where the mouse cursor is</summary>
 		private BoxFlags _box_flags;
 
+		/// <summary>Gets the box flags in relation to the selection rectangle.</summary>
+		/// <param name="x">The mouse x position.</param>
+		/// <param name="y">The mouse y position.</param>
+		/// <returns></returns>
 		private BoxFlags GetFlags(int x, int y)
 		{
 			BoxFlags resizeMask = BoxFlags.None;
@@ -237,6 +247,9 @@ namespace BadgeImageCreator
 			return resizeMask;
 		}
 
+		/// <summary>Handles the MouseDown event of the pictureBox1 control to start a resize, placement or movement event.</summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="MouseEventArgs"/> instance containing the event data.</param>
 		private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
 		{
 			// Starting point of the selection:
@@ -291,6 +304,9 @@ namespace BadgeImageCreator
 			pcFullImage.Refresh();
 		}
 
+		/// <summary>Handles the MouseMove event of the pictureBox1 control to control the resize, placement or movement event.</summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="MouseEventArgs"/> instance containing the event data.</param>
 		private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
 		{
 			float ratiow = 176f / 264f;
@@ -419,6 +435,9 @@ namespace BadgeImageCreator
 			}
 		}
 
+		/// <summary>Handles the MouseUp event of the pictureBox1 control to finsh the resize, placement or movement event.</summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="MouseEventArgs"/> instance containing the event data.</param>
 		private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
 		{
 			if (_state != BoxState.None)
@@ -431,6 +450,9 @@ namespace BadgeImageCreator
 			pcFullImage.Refresh();
 		}
 
+		/// <summary>Handles the Paint event of the pcFullImage control which redraws the selection rectangle.</summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="PaintEventArgs"/> instance containing the event data.</param>
 		private void pcFullImage_Paint(object sender, PaintEventArgs e)
 		{
 			// Draw a rectangle displaying the current selection
@@ -444,11 +466,17 @@ namespace BadgeImageCreator
 			}
 		}
 
+		/// <summary>Refreshes the image.</summary>
+		/// <param name="sender">The sender.</param>
+		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private void RefreshImage(object sender, EventArgs e)
 		{
 			cmdProcess.PerformClick();
 		}
 
+		/// <summary>Handles the Click event of the cmdOpen control to open a new image for editing.</summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private void cmdOpen_Click(object sender, EventArgs e)
 		{
 			if (ofdImage.ShowDialog() != DialogResult.OK)
@@ -468,18 +496,29 @@ namespace BadgeImageCreator
 			}
 		}
 
-		private void Form1_Load(object sender, EventArgs e)
+		/// <summary>Handles the Load event of the frmBadgeCreator control.</summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+		private void frmBadgeCreator_Load(object sender, EventArgs e)
 		{
 			LoadDitheringModes();
 
 			LoadOldSettings();
 		}
 
+		/// <summary>
+		/// Handles the SelectionChangeCommitted event of the cmbAlgorithm control to select a different dithering method.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private void cmbAlgorithm_SelectionChangeCommitted(object sender, EventArgs e)
 		{
 			cmdProcess.PerformClick();
 		}
 
+		/// <summary>Handles the Click event of the pbDest control to save the output image.</summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private void pbDest_Click(object sender, EventArgs e)
 		{
 			if (sfdResult.ShowDialog(this) == DialogResult.OK)
@@ -494,6 +533,7 @@ namespace BadgeImageCreator
 			}
 		}
 
+		/// <summary>Saves the image to wif.</summary>
 		private void SaveImageToWif()
 		{
 			sfdResult.DefaultExt = ".WIF";
@@ -530,6 +570,9 @@ namespace BadgeImageCreator
 			}
 		}
 
+		/// <summary>Loads the wif image.</summary>
+		/// <param name="file">The file.</param>
+		/// <returns></returns>
 		private Bitmap LoadWifImage(FileInfo file)
 		{
 			if (file.Exists)
@@ -566,6 +609,9 @@ namespace BadgeImageCreator
 			return null;
 		}
 
+		/// <summary>Handles the Click event of the cmdPreviewWIF control to prompt to load a WIF image and display the resultant image.</summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private void cmdPreviewWIF_Click(object sender, EventArgs e)
 		{
 			if (ofdWifImage.ShowDialog() != System.Windows.Forms.DialogResult.OK)
@@ -582,6 +628,14 @@ namespace BadgeImageCreator
 			frmPreviewWif frm = new frmPreviewWif();
 			frm.PreviewImage = LoadWifImage(fi);
 			frm.Show();
+		}
+
+		/// <summary>Handles the Click event of the cmdAddFilter control adding a filter to the filter stack.</summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+		private void cmdAddFilter_Click(object sender, EventArgs e)
+		{
+
 		}
 	}
 

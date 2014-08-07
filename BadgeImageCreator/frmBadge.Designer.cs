@@ -1,6 +1,6 @@
 ﻿namespace BadgeImageCreator
 {
-	partial class Form1
+	partial class frmBadge
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -28,9 +28,10 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmBadge));
+			System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("Filer Name Here");
 			this.cmdProcess = new System.Windows.Forms.Button();
-			this.panel1 = new System.Windows.Forms.Panel();
+			this.panMainImage = new System.Windows.Forms.Panel();
 			this.pcFullImage = new AForge.Controls.PictureBox();
 			this.pbInt = new AForge.Controls.PictureBox();
 			this.pbDest = new AForge.Controls.PictureBox();
@@ -47,7 +48,10 @@
 			this.sfdResult = new System.Windows.Forms.SaveFileDialog();
 			this.cmdPreviewWIF = new System.Windows.Forms.Button();
 			this.ofdWifImage = new System.Windows.Forms.OpenFileDialog();
-			this.panel1.SuspendLayout();
+			this.lsvFilterStack = new System.Windows.Forms.ListView();
+			this.cmdAddFilter = new System.Windows.Forms.Button();
+			this.chName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.panMainImage.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pcFullImage)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pbInt)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pbDest)).BeginInit();
@@ -64,18 +68,19 @@
 			this.cmdProcess.UseVisualStyleBackColor = true;
 			this.cmdProcess.Click += new System.EventHandler(this.cmdProcess_Click);
 			// 
-			// panel1
+			// panMainImage
 			// 
-			this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+			this.panMainImage.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-			this.panel1.AutoScroll = true;
-			this.panel1.BackColor = System.Drawing.Color.Transparent;
-			this.panel1.Controls.Add(this.pcFullImage);
-			this.panel1.Location = new System.Drawing.Point(10, 276);
-			this.panel1.Name = "panel1";
-			this.panel1.Size = new System.Drawing.Size(811, 439);
-			this.panel1.TabIndex = 4;
+			this.panMainImage.AutoScroll = true;
+			this.panMainImage.BackColor = System.Drawing.Color.Transparent;
+			this.panMainImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+			this.panMainImage.Controls.Add(this.pcFullImage);
+			this.panMainImage.Location = new System.Drawing.Point(10, 276);
+			this.panMainImage.Name = "panMainImage";
+			this.panMainImage.Size = new System.Drawing.Size(811, 439);
+			this.panMainImage.TabIndex = 4;
 			// 
 			// pcFullImage
 			// 
@@ -228,30 +233,62 @@
 			this.ofdWifImage.Filter = "Wyolum Image Files|*.wif|All files|*.*";
 			this.ofdWifImage.Title = "Preview WIF Image";
 			// 
-			// Form1
+			// lsvFilterStack
+			// 
+			this.lsvFilterStack.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.chName});
+			this.lsvFilterStack.FullRowSelect = true;
+			this.lsvFilterStack.GridLines = true;
+			this.lsvFilterStack.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
+            listViewItem1});
+			this.lsvFilterStack.Location = new System.Drawing.Point(299, 27);
+			this.lsvFilterStack.Name = "lsvFilterStack";
+			this.lsvFilterStack.Size = new System.Drawing.Size(223, 131);
+			this.lsvFilterStack.TabIndex = 13;
+			this.lsvFilterStack.UseCompatibleStateImageBehavior = false;
+			this.lsvFilterStack.View = System.Windows.Forms.View.Details;
+			// 
+			// cmdAddFilter
+			// 
+			this.cmdAddFilter.Location = new System.Drawing.Point(120, 234);
+			this.cmdAddFilter.Name = "cmdAddFilter";
+			this.cmdAddFilter.Size = new System.Drawing.Size(104, 33);
+			this.cmdAddFilter.TabIndex = 9;
+			this.cmdAddFilter.Text = "Open";
+			this.cmdAddFilter.UseVisualStyleBackColor = true;
+			this.cmdAddFilter.Click += new System.EventHandler(this.cmdAddFilter_Click);
+			// 
+			// chName
+			// 
+			this.chName.Text = "Name";
+			this.chName.Width = 200;
+			// 
+			// frmBadge
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(833, 727);
+			this.Controls.Add(this.lsvFilterStack);
 			this.Controls.Add(this.cmdPreviewWIF);
 			this.Controls.Add(this.cmbAlgorithm);
 			this.Controls.Add(this.label3);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label1);
+			this.Controls.Add(this.cmdAddFilter);
 			this.Controls.Add(this.cmdOpen);
 			this.Controls.Add(this.hsbSaturation);
 			this.Controls.Add(this.hsbBrightness);
 			this.Controls.Add(this.hsbContrast);
-			this.Controls.Add(this.panel1);
+			this.Controls.Add(this.panMainImage);
 			this.Controls.Add(this.pbInt);
 			this.Controls.Add(this.pbDest);
 			this.Controls.Add(this.pbSource);
 			this.Controls.Add(this.cmdProcess);
-			this.Name = "Form1";
-			this.Text = "Form1";
-			this.Load += new System.EventHandler(this.Form1_Load);
-			this.panel1.ResumeLayout(false);
-			this.panel1.PerformLayout();
+			this.Name = "frmBadge";
+			this.Text = "Badge Image Creator";
+			this.Load += new System.EventHandler(this.frmBadgeCreator_Load);
+			this.panMainImage.ResumeLayout(false);
+			this.panMainImage.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pcFullImage)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pbInt)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pbDest)).EndInit();
@@ -268,7 +305,7 @@
 		private AForge.Controls.PictureBox pbDest;
 		private AForge.Controls.PictureBox pbInt;
 		private AForge.Controls.PictureBox pcFullImage;
-		private System.Windows.Forms.Panel panel1;
+		private System.Windows.Forms.Panel panMainImage;
 		private System.Windows.Forms.HScrollBar hsbContrast;
 		private System.Windows.Forms.HScrollBar hsbBrightness;
 		private System.Windows.Forms.HScrollBar hsbSaturation;
@@ -281,6 +318,9 @@
 		private System.Windows.Forms.SaveFileDialog sfdResult;
 		private System.Windows.Forms.Button cmdPreviewWIF;
 		private System.Windows.Forms.OpenFileDialog ofdWifImage;
+		private System.Windows.Forms.ListView lsvFilterStack;
+		private System.Windows.Forms.Button cmdAddFilter;
+		private System.Windows.Forms.ColumnHeader chName;
 	}
 }
 

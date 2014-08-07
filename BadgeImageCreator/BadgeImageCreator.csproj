@@ -60,11 +60,11 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Form1.cs">
+    <Compile Include="frmBadge.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="frmBadge.Designer.cs">
+      <DependentUpon>frmBadge.cs</DependentUpon>
     </Compile>
     <Compile Include="frmFilterSettings.cs">
       <SubType>Form</SubType>
@@ -82,8 +82,8 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuickSettings.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="frmBadge.resx">
+      <DependentUpon>frmBadge.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="frmFilterSettings.resx">
       <DependentUpon>frmFilterSettings.cs</DependentUpon>
