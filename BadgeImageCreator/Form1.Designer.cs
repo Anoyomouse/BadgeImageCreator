@@ -38,8 +38,6 @@
 			this.hsbContrast = new System.Windows.Forms.HScrollBar();
 			this.hsbBrightness = new System.Windows.Forms.HScrollBar();
 			this.hsbSaturation = new System.Windows.Forms.HScrollBar();
-			this.chkHF1 = new System.Windows.Forms.CheckBox();
-			this.chkHF2 = new System.Windows.Forms.CheckBox();
 			this.cmdOpen = new System.Windows.Forms.Button();
 			this.ofdImage = new System.Windows.Forms.OpenFileDialog();
 			this.label1 = new System.Windows.Forms.Label();
@@ -47,6 +45,8 @@
 			this.label3 = new System.Windows.Forms.Label();
 			this.cmbAlgorithm = new System.Windows.Forms.ComboBox();
 			this.sfdResult = new System.Windows.Forms.SaveFileDialog();
+			this.cmdPreviewWIF = new System.Windows.Forms.Button();
+			this.ofdWifImage = new System.Windows.Forms.OpenFileDialog();
 			this.panel1.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pcFullImage)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pbInt)).BeginInit();
@@ -56,9 +56,9 @@
 			// 
 			// cmdProcess
 			// 
-			this.cmdProcess.Location = new System.Drawing.Point(12, 195);
+			this.cmdProcess.Location = new System.Drawing.Point(10, 195);
 			this.cmdProcess.Name = "cmdProcess";
-			this.cmdProcess.Size = new System.Drawing.Size(104, 23);
+			this.cmdProcess.Size = new System.Drawing.Size(104, 33);
 			this.cmdProcess.TabIndex = 2;
 			this.cmdProcess.Text = "Process";
 			this.cmdProcess.UseVisualStyleBackColor = true;
@@ -66,7 +66,8 @@
 			// 
 			// panel1
 			// 
-			this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+			this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.panel1.AutoScroll = true;
 			this.panel1.BackColor = System.Drawing.Color.Transparent;
@@ -152,33 +153,11 @@
 			this.hsbSaturation.TabIndex = 6;
 			this.hsbSaturation.ValueChanged += new System.EventHandler(this.RefreshImage);
 			// 
-			// chkHF1
-			// 
-			this.chkHF1.AutoSize = true;
-			this.chkHF1.Location = new System.Drawing.Point(135, 199);
-			this.chkHF1.Name = "chkHF1";
-			this.chkHF1.Size = new System.Drawing.Size(15, 14);
-			this.chkHF1.TabIndex = 7;
-			this.chkHF1.UseVisualStyleBackColor = true;
-			this.chkHF1.CheckedChanged += new System.EventHandler(this.RefreshImage);
-			// 
-			// chkHF2
-			// 
-			this.chkHF2.AutoSize = true;
-			this.chkHF2.Checked = true;
-			this.chkHF2.CheckState = System.Windows.Forms.CheckState.Checked;
-			this.chkHF2.Location = new System.Drawing.Point(156, 198);
-			this.chkHF2.Name = "chkHF2";
-			this.chkHF2.Size = new System.Drawing.Size(15, 14);
-			this.chkHF2.TabIndex = 8;
-			this.chkHF2.UseVisualStyleBackColor = true;
-			this.chkHF2.CheckedChanged += new System.EventHandler(this.RefreshImage);
-			// 
 			// cmdOpen
 			// 
-			this.cmdOpen.Location = new System.Drawing.Point(213, 195);
+			this.cmdOpen.Location = new System.Drawing.Point(120, 195);
 			this.cmdOpen.Name = "cmdOpen";
-			this.cmdOpen.Size = new System.Drawing.Size(81, 23);
+			this.cmdOpen.Size = new System.Drawing.Size(104, 33);
 			this.cmdOpen.TabIndex = 9;
 			this.cmdOpen.Text = "Open";
 			this.cmdOpen.UseVisualStyleBackColor = true;
@@ -220,6 +199,7 @@
 			// 
 			this.cmbAlgorithm.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+			this.cmbAlgorithm.DisplayMember = "Name";
 			this.cmbAlgorithm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cmbAlgorithm.FormattingEnabled = true;
 			this.cmbAlgorithm.Location = new System.Drawing.Point(317, 243);
@@ -232,18 +212,33 @@
 			// 
 			this.sfdResult.DefaultExt = "PNG";
 			// 
+			// cmdPreviewWIF
+			// 
+			this.cmdPreviewWIF.Location = new System.Drawing.Point(10, 234);
+			this.cmdPreviewWIF.Name = "cmdPreviewWIF";
+			this.cmdPreviewWIF.Size = new System.Drawing.Size(104, 33);
+			this.cmdPreviewWIF.TabIndex = 12;
+			this.cmdPreviewWIF.Text = "Preview WIF";
+			this.cmdPreviewWIF.UseVisualStyleBackColor = true;
+			this.cmdPreviewWIF.Click += new System.EventHandler(this.cmdPreviewWIF_Click);
+			// 
+			// ofdWifImage
+			// 
+			this.ofdWifImage.DefaultExt = "wif";
+			this.ofdWifImage.Filter = "Wyolum Image Files|*.wif|All files|*.*";
+			this.ofdWifImage.Title = "Preview WIF Image";
+			// 
 			// Form1
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(833, 727);
+			this.Controls.Add(this.cmdPreviewWIF);
 			this.Controls.Add(this.cmbAlgorithm);
 			this.Controls.Add(this.label3);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.cmdOpen);
-			this.Controls.Add(this.chkHF2);
-			this.Controls.Add(this.chkHF1);
 			this.Controls.Add(this.hsbSaturation);
 			this.Controls.Add(this.hsbBrightness);
 			this.Controls.Add(this.hsbContrast);
@@ -277,8 +272,6 @@
 		private System.Windows.Forms.HScrollBar hsbContrast;
 		private System.Windows.Forms.HScrollBar hsbBrightness;
 		private System.Windows.Forms.HScrollBar hsbSaturation;
-		private System.Windows.Forms.CheckBox chkHF1;
-		private System.Windows.Forms.CheckBox chkHF2;
 		private System.Windows.Forms.Button cmdOpen;
 		private System.Windows.Forms.OpenFileDialog ofdImage;
 		private System.Windows.Forms.Label label1;
@@ -286,6 +279,8 @@
 		private System.Windows.Forms.Label label3;
 		private System.Windows.Forms.ComboBox cmbAlgorithm;
 		private System.Windows.Forms.SaveFileDialog sfdResult;
+		private System.Windows.Forms.Button cmdPreviewWIF;
+		private System.Windows.Forms.OpenFileDialog ofdWifImage;
 	}
 }
 

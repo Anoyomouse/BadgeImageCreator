@@ -60,7 +60,65 @@ namespace BadgeImageCreator
 			}
 		}
 
-		/// <summary>Handles the Click event of the Process button.</summary>
+		/// <summary>Loads the old settings from the xml and sets up the program.</summary>
+		private void LoadOldSettings()
+		{
+			var hasSettings = QuickSettings.Get["HasSettings"];
+			if (string.IsNullOrWhiteSpace(hasSettings) || !hasSettings.Equals("true", StringComparison.InvariantCultureIgnoreCase))
+			{
+				return;
+			}
+
+			var previousFile = QuickSettings.Get["PreviousFile"];
+			if (File.Exists(previousFile))
+			{
+				var file = new FileInfo(ofdImage.FileName);
+				if (file.Exists)
+				{
+					pcFullImage.Image = System.Drawing.Image.FromFile(file.FullName);
+				}
+			}
+
+			if (pcFullImage.Image != null)
+			{
+				_state = BoxState.None;
+
+				int x, y, width, height;
+
+				if (int.TryParse(QuickSettings.Get["BoxX"], out x) && int.TryParse(QuickSettings.Get["BoxY"], out y) &&
+					int.TryParse(QuickSettings.Get["BoxWidth"], out width) && int.TryParse(QuickSettings.Get["BoxHeight"], out height))
+				{
+					_placed = true;
+					_selection = new Rectangle(x, y, width, height);
+				}
+				else
+				{
+					_placed = false;
+				}
+
+				cmdProcess.PerformClick();
+			}
+		}
+
+		/// <summary>Saves the settings to an xml file so they can be loaded on program start.</summary>
+		private void SaveSettings()
+		{
+			QuickSettings.Get["HasSettings"] = "true";
+			if (!string.IsNullOrWhiteSpace(ofdImage.FileName))
+			{
+				QuickSettings.Get["PreviousFile"] = ofdImage.FileName;
+			}
+
+			if (_placed)
+			{
+				QuickSettings.Get["BoxX"] = _selection.X.ToString();
+				QuickSettings.Get["BoxY"] = _selection.Y.ToString();
+				QuickSettings.Get["BoxWidth"] = _selection.Width.ToString();
+				QuickSettings.Get["BoxHeight"] = _selection.Height.ToString();
+			}
+		}
+
+		/// <summary>Handles the Click event of the Process button which crops the main image and applies the filter stack to generate the output image.</summary>
 		/// <param name="sender">The source of the event.</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private void cmdProcess_Click(object sender, EventArgs e)
@@ -80,17 +138,9 @@ namespace BadgeImageCreator
 			// apply the filter
 			sc.ApplyInPlace(b);
 
-			var hf = new HistogramEqualization();
-			
-			if (chkHF1.Checked)
-				hf.ApplyInPlace(b);
-
 			pbSource.Image = b;
 
 			var greyb = AForge.Imaging.Filters.Grayscale.CommonAlgorithms.BT709.Apply(b);
-
-			if (chkHF2.Checked)
-				hf.ApplyInPlace(greyb);
 
 			var bc = new BrightnessCorrection();
 			bc.AdjustValue = hsbBrightness.Value;
@@ -120,6 +170,7 @@ namespace BadgeImageCreator
 			pbDest.Image = ditheredb;
 		}
 
+		/// <summary>Populates the dithering modes dropdown with available dithering modes.</summary>
 		private void LoadDitheringModes()
 		{
 			List<BaseInPlacePartialFilter> filters = new List<BaseInPlacePartialFilter>();
@@ -136,11 +187,9 @@ namespace BadgeImageCreator
 		}
 
 		private int BoxWidth = 4;
-
 		private bool _placed = false;
 		private Rectangle _selection;
 		private Point _movement_point;
-
 		private BoxState _state;
 		private BoxFlags _box_flags;
 
@@ -375,6 +424,7 @@ namespace BadgeImageCreator
 			if (_state != BoxState.None)
 			{
 				cmdProcess.PerformClick();
+				SaveSettings();
 				_state = BoxState.None;
 			}
 
@@ -410,6 +460,10 @@ namespace BadgeImageCreator
 			if (file.Exists)
 			{
 				pcFullImage.Image = System.Drawing.Image.FromFile(file.FullName);
+				_placed = false;
+
+				SaveSettings();
+
 				cmdProcess.PerformClick();
 			}
 		}
@@ -417,6 +471,8 @@ namespace BadgeImageCreator
 		private void Form1_Load(object sender, EventArgs e)
 		{
 			LoadDitheringModes();
+
+			LoadOldSettings();
 		}
 
 		private void cmbAlgorithm_SelectionChangeCommitted(object sender, EventArgs e)
@@ -454,8 +510,8 @@ namespace BadgeImageCreator
 
 				short width = 264, height = 176;
 
-				fileStream.Write(width);
 				fileStream.Write(height);
+				fileStream.Write(width);
 				for (int j = 0; j < height; j ++)
 				{
 					for (int i = 0; i < width; i += 8)
@@ -474,18 +530,16 @@ namespace BadgeImageCreator
 			}
 		}
 
-		private Bitmap LoadWifImage()
+		private Bitmap LoadWifImage(FileInfo file)
 		{
-			ofdImage.DefaultExt = ".WIF";
-			if (ofdImage.ShowDialog(this) == DialogResult.OK)
+			if (file.Exists)
 			{
-				var file = new FileInfo(sfdResult.FileName);
 				var fileStream = new BinaryReader(file.OpenRead());
 
 				short width = 264, height = 176;
 
-				width = fileStream.ReadInt16();
 				height = fileStream.ReadInt16();
+				width = fileStream.ReadInt16();
 
 				Bitmap bitmap = new Bitmap(width, height);
 				Graphics g = Graphics.FromImage(bitmap);
@@ -510,6 +564,24 @@ namespace BadgeImageCreator
 				return bitmap;
 			}
 			return null;
+		}
+
+		private void cmdPreviewWIF_Click(object sender, EventArgs e)
+		{
+			if (ofdWifImage.ShowDialog() != System.Windows.Forms.DialogResult.OK)
+			{
+				return;
+			}
+
+			var fi = new FileInfo(ofdWifImage.FileName);
+			if (!fi.Exists)
+			{
+				return;
+			}
+
+			frmPreviewWif frm = new frmPreviewWif();
+			frm.PreviewImage = LoadWifImage(fi);
+			frm.Show();
 		}
 	}
 
