@@ -49,8 +49,9 @@
 			this.cmdPreviewWIF = new System.Windows.Forms.Button();
 			this.ofdWifImage = new System.Windows.Forms.OpenFileDialog();
 			this.lsvFilterStack = new System.Windows.Forms.ListView();
-			this.cmdAddFilter = new System.Windows.Forms.Button();
 			this.chName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+			this.cmdAddFilter = new System.Windows.Forms.Button();
+			this.cmbFilters = new System.Windows.Forms.ComboBox();
 			this.panMainImage.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pcFullImage)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pbInt)).BeginInit();
@@ -131,7 +132,7 @@
 			// 
 			// hsbContrast
 			// 
-			this.hsbContrast.Location = new System.Drawing.Point(318, 209);
+			this.hsbContrast.Location = new System.Drawing.Point(660, 195);
 			this.hsbContrast.Maximum = 127;
 			this.hsbContrast.Minimum = -127;
 			this.hsbContrast.Name = "hsbContrast";
@@ -141,7 +142,7 @@
 			// 
 			// hsbBrightness
 			// 
-			this.hsbBrightness.Location = new System.Drawing.Point(493, 209);
+			this.hsbBrightness.Location = new System.Drawing.Point(660, 215);
 			this.hsbBrightness.Maximum = 255;
 			this.hsbBrightness.Minimum = -255;
 			this.hsbBrightness.Name = "hsbBrightness";
@@ -151,7 +152,7 @@
 			// 
 			// hsbSaturation
 			// 
-			this.hsbSaturation.Location = new System.Drawing.Point(650, 209);
+			this.hsbSaturation.Location = new System.Drawing.Point(660, 235);
 			this.hsbSaturation.Minimum = -100;
 			this.hsbSaturation.Name = "hsbSaturation";
 			this.hsbSaturation.Size = new System.Drawing.Size(157, 20);
@@ -176,7 +177,7 @@
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(318, 193);
+			this.label1.Location = new System.Drawing.Point(611, 198);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(46, 13);
 			this.label1.TabIndex = 10;
@@ -185,7 +186,7 @@
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(490, 198);
+			this.label2.Location = new System.Drawing.Point(601, 218);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(56, 13);
 			this.label2.TabIndex = 10;
@@ -194,7 +195,7 @@
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(653, 196);
+			this.label3.Location = new System.Drawing.Point(602, 238);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(55, 13);
 			this.label3.TabIndex = 10;
@@ -207,7 +208,7 @@
 			this.cmbAlgorithm.DisplayMember = "Name";
 			this.cmbAlgorithm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cmbAlgorithm.FormattingEnabled = true;
-			this.cmbAlgorithm.Location = new System.Drawing.Point(317, 243);
+			this.cmbAlgorithm.Location = new System.Drawing.Point(448, 195);
 			this.cmbAlgorithm.Name = "cmbAlgorithm";
 			this.cmbAlgorithm.Size = new System.Drawing.Size(157, 21);
 			this.cmbAlgorithm.TabIndex = 11;
@@ -241,33 +242,49 @@
 			this.lsvFilterStack.GridLines = true;
 			this.lsvFilterStack.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
             listViewItem1});
-			this.lsvFilterStack.Location = new System.Drawing.Point(299, 27);
+			this.lsvFilterStack.Location = new System.Drawing.Point(304, 58);
+			this.lsvFilterStack.MultiSelect = false;
 			this.lsvFilterStack.Name = "lsvFilterStack";
 			this.lsvFilterStack.Size = new System.Drawing.Size(223, 131);
 			this.lsvFilterStack.TabIndex = 13;
 			this.lsvFilterStack.UseCompatibleStateImageBehavior = false;
 			this.lsvFilterStack.View = System.Windows.Forms.View.Details;
-			// 
-			// cmdAddFilter
-			// 
-			this.cmdAddFilter.Location = new System.Drawing.Point(120, 234);
-			this.cmdAddFilter.Name = "cmdAddFilter";
-			this.cmdAddFilter.Size = new System.Drawing.Size(104, 33);
-			this.cmdAddFilter.TabIndex = 9;
-			this.cmdAddFilter.Text = "Open";
-			this.cmdAddFilter.UseVisualStyleBackColor = true;
-			this.cmdAddFilter.Click += new System.EventHandler(this.cmdAddFilter_Click);
+			this.lsvFilterStack.DoubleClick += new System.EventHandler(this.lsvFilterStack_DoubleClick);
 			// 
 			// chName
 			// 
 			this.chName.Text = "Name";
 			this.chName.Width = 200;
 			// 
+			// cmdAddFilter
+			// 
+			this.cmdAddFilter.Location = new System.Drawing.Point(345, 234);
+			this.cmdAddFilter.Name = "cmdAddFilter";
+			this.cmdAddFilter.Size = new System.Drawing.Size(104, 33);
+			this.cmdAddFilter.TabIndex = 9;
+			this.cmdAddFilter.Text = "Add Filter";
+			this.cmdAddFilter.UseVisualStyleBackColor = true;
+			this.cmdAddFilter.Click += new System.EventHandler(this.cmdAddFilter_Click);
+			// 
+			// cmbFilters
+			// 
+			this.cmbFilters.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.cmbFilters.DisplayMember = "Name";
+			this.cmbFilters.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+			this.cmbFilters.FormattingEnabled = true;
+			this.cmbFilters.Location = new System.Drawing.Point(182, 241);
+			this.cmbFilters.Name = "cmbFilters";
+			this.cmbFilters.Size = new System.Drawing.Size(157, 21);
+			this.cmbFilters.TabIndex = 14;
+			this.cmbFilters.SelectedIndexChanged += new System.EventHandler(this.cmbFilters_SelectedIndexChanged);
+			// 
 			// frmBadge
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(833, 727);
+			this.Controls.Add(this.cmbFilters);
 			this.Controls.Add(this.lsvFilterStack);
 			this.Controls.Add(this.cmdPreviewWIF);
 			this.Controls.Add(this.cmbAlgorithm);
@@ -321,6 +338,7 @@
 		private System.Windows.Forms.ListView lsvFilterStack;
 		private System.Windows.Forms.Button cmdAddFilter;
 		private System.Windows.Forms.ColumnHeader chName;
+		private System.Windows.Forms.ComboBox cmbFilters;
 	}
 }
 

@@ -14,6 +14,8 @@ namespace BadgeImageCreator
 	/// <summary>Main form for the application</summary>
 	public partial class frmBadge : Form
 	{
+		private FiltersSequence filterStack;
+
 		/// <summary>Initializes a new instance of the <see cref="frmBadge"/> class.</summary>
 		public frmBadge()
 		{
@@ -58,6 +60,15 @@ namespace BadgeImageCreator
 					}
 				}
 			}
+
+			filterList.Sort(new Comparison<Type>((x, y) => x.Name.CompareTo(y.Name)));
+
+			cmbFilters.Items.Clear();
+			foreach(var type in filterList)
+			{
+				cmbFilters.Items.Add(type);
+			}
+			cmbFilters.SelectedIndex = 0;
 		}
 
 		/// <summary>Loads the old settings from the xml and sets up the program.</summary>
@@ -150,6 +161,11 @@ namespace BadgeImageCreator
 			cc.Factor = hsbContrast.Value;
 			cc.ApplyInPlace(greyb);
 
+			var edges = new Edges();
+			edges.Divisor = 1;
+			edges.Threshold = 300;
+
+			edges.ApplyInPlace(greyb);
 
 			pbInt.Image = greyb;
 
@@ -501,6 +517,9 @@ namespace BadgeImageCreator
 		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private void frmBadgeCreator_Load(object sender, EventArgs e)
 		{
+			lsvFilterStack.Items.Clear();
+			filterStack = new FiltersSequence();
+
 			LoadDitheringModes();
 
 			LoadOldSettings();
@@ -635,7 +654,73 @@ namespace BadgeImageCreator
 		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private void cmdAddFilter_Click(object sender, EventArgs e)
 		{
+			Type t = cmbFilters.SelectedItem as Type;
 
+			if (t == null)
+			{
+				MessageBox.Show(string.Format("Cannot add this type as it's not a type? {0} ({1})", cmbFilters.SelectedItem, cmbFilters.SelectedItem.GetType()));
+				return;
+			}
+
+			IFilter filter = (IFilter)Activator.CreateInstance(t);
+			var settings = new frmFilterSettings();
+			settings.FilterToModify = filter;
+
+			var lvi = new ListViewItem(t.Name);
+			lvi.Tag = settings;
+			lsvFilterStack.Items.Add(lvi);
+
+			filterStack.Add(filter);
+		}
+
+		/// <summary>
+		/// Handles the SelectedIndexChanged event of the cmbFilters control setting the description text, etc.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+		private void cmbFilters_SelectedIndexChanged(object sender, EventArgs e)
+		{
+
+		}
+
+		/// <summary>Handles the DoubleClick event of the lsvFilterStack control.</summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+		private void lsvFilterStack_DoubleClick(object sender, EventArgs e)
+		{
+			if (lsvFilterStack.SelectedItems.Count > 0)
+			{
+				var item = lsvFilterStack.SelectedItems[0];
+				var frm = (item.Tag as frmFilterSettings);
+				if (filterStack.Count > 1)
+				{
+					// Find frm.FilterToModify in filter stack
+					// Apply all filters till we get to the filter we're working with
+					// Pass source image (modified) into the form so we have a source image
+
+					int pos = 0;
+					var startImage = pbSource.Image.Clone() as Bitmap;
+					foreach (var filter in filterStack)
+					{
+						if (filter == frm.FilterToModify)
+						{
+							break;
+						}
+
+						startImage = ((IFilter)filter).Apply(startImage);
+						pos++;
+					}
+
+					frm.BeforeFilter = startImage;
+				}
+				else if (filterStack.Count == 1)
+				{
+					// If this is the only filter then our source is pbSource
+					frm.BeforeFilter = pbSource.Image;
+				}
+
+				frm.ShowDialog(this);
+			}
 		}
 	}
 
