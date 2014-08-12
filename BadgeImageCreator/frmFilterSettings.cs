@@ -184,7 +184,11 @@ namespace BadgeImageCreator
 		{
 			if (pbSource.Image != null)
 			{
-				pbDest.Image = this.FilterToModify.Apply(pbSource.Image as Bitmap);
+				var sourceImage = pbSource.Image as Bitmap;
+				if ((this.FilterToModify as BaseFilter).FormatTranslations.ContainsKey(sourceImage.PixelFormat))
+				{
+					pbDest.Image = this.FilterToModify.Apply(sourceImage);
+				}
 			}
 		}
 	}
