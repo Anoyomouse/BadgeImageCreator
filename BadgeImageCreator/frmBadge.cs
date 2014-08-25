@@ -144,30 +144,49 @@ namespace BadgeImageCreator
 			g.DrawImage(pcFullImage.Image, new Rectangle(0, 0, pbSource.Width, pbSource.Height), _selection.X, _selection.Y, _selection.Width, _selection.Height, GraphicsUnit.Pixel);
 			g.Dispose();
 
-			var sc = new SaturationCorrection();
-			sc.AdjustValue = hsbSaturation.Value / 100.0f;
-			// apply the filter
-			sc.ApplyInPlace(b);
+			if (filterStack.Count == 0)
+			{
+				var sc = new SaturationCorrection();
+				sc.AdjustValue = hsbSaturation.Value / 100.0f;
+				// apply the filter
+				sc.ApplyInPlace(b);
 
-			pbSource.Image = b;
+				pbSource.Image = b;
 
-			var greyb = AForge.Imaging.Filters.Grayscale.CommonAlgorithms.BT709.Apply(b);
+				var greyb = AForge.Imaging.Filters.Grayscale.CommonAlgorithms.BT709.Apply(b);
 
-			var bc = new BrightnessCorrection();
-			bc.AdjustValue = hsbBrightness.Value;
-			bc.ApplyInPlace(greyb);
+				var bc = new BrightnessCorrection();
+				bc.AdjustValue = hsbBrightness.Value;
+				bc.ApplyInPlace(greyb);
 
-			var cc = new ContrastCorrection();
-			cc.Factor = hsbContrast.Value;
-			cc.ApplyInPlace(greyb);
+				var cc = new ContrastCorrection();
+				cc.Factor = hsbContrast.Value;
+				cc.ApplyInPlace(greyb);
 
-			var edges = new Edges();
-			edges.Divisor = 1;
-			edges.Threshold = 300;
+				var edges = new Edges();
+				edges.Divisor = 1;
+				edges.Threshold = 300;
 
-			edges.ApplyInPlace(greyb);
+				edges.ApplyInPlace(greyb);
+				pbInt.Image = greyb;
 
-			pbInt.Image = greyb;
+				b = greyb;
+			}
+			else
+			{
+				b = filterStack.Apply(b);
+
+				if (AForge.Imaging.Filters.Grayscale.CommonAlgorithms.BT709.FormatTranslations.ContainsKey(b.PixelFormat))
+				{
+					b = AForge.Imaging.Filters.Grayscale.CommonAlgorithms.BT709.Apply(b);
+				}
+				else
+				{
+					this.Text = "Cannot convert to greyscale";
+				}
+
+				pbInt.Image = b;
+			}
 
 			//BaseInPlacePartialFilter filter = new AForge.Imaging.Filters.FloydSteinbergDithering();
 			BaseInPlacePartialFilter filter = null;
@@ -182,8 +201,16 @@ namespace BadgeImageCreator
 				filter = new AForge.Imaging.Filters.SierraDithering();
 			}
 
-			var ditheredb = filter.Apply(greyb);
-			pbDest.Image = ditheredb;
+			if (AForge.Imaging.Filters.Grayscale.CommonAlgorithms.BT709.FormatTranslations.ContainsKey(b.PixelFormat))
+			{
+				var ditheredb = filter.Apply(b);
+				pbDest.Image = ditheredb;
+				this.Text = "Badger!";
+			}
+			else
+			{
+				this.Text = "Cannot dither this image!";
+			}
 		}
 
 		/// <summary>Populates the dithering modes dropdown with available dithering modes.</summary>
@@ -707,7 +734,13 @@ namespace BadgeImageCreator
 							break;
 						}
 
-						startImage = ((IFilter)filter).Apply(startImage);
+						var currentFilter = ((IFilter)filter);
+						var filterInfo = filter as IFilterInformation;
+						if (filterInfo.FormatTranslations.ContainsKey(startImage.PixelFormat))
+						{
+							startImage = currentFilter.Apply(startImage);
+						}
+
 						pos++;
 					}
 
@@ -720,6 +753,36 @@ namespace BadgeImageCreator
 				}
 
 				frm.ShowDialog(this);
+			}
+		}
+
+		/// <summary>
+		/// Handles the SelectedIndexChanged event of the lsvFilterStack control.
+		/// </summary>
+		/// <param name="sender">The source of the event.</param>
+		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
+		private void lsvFilterStack_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (lsvFilterStack.SelectedItems.Count > 0)
+			{
+				cmdDelFilter.Enabled = true;
+			}
+			else
+			{
+				cmdDelFilter.Enabled = false;
+			}
+		}
+
+		private void cmdDelFilter_Click(object sender, EventArgs e)
+		{
+			if (lsvFilterStack.SelectedItems.Count > 0)
+			{
+				var item = lsvFilterStack.SelectedItems[0];
+				(item.Tag as frmFilterSettings).Dispose();
+				item.Tag = null;
+
+				lsvFilterStack.Items.Remove(item);
+				item = null;
 			}
 		}
 	}

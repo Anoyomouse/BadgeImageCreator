@@ -52,6 +52,7 @@
 			this.chName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
 			this.cmdAddFilter = new System.Windows.Forms.Button();
 			this.cmbFilters = new System.Windows.Forms.ComboBox();
+			this.cmdDelFilter = new System.Windows.Forms.Button();
 			this.panMainImage.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pcFullImage)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pbInt)).BeginInit();
@@ -132,7 +133,7 @@
 			// 
 			// hsbContrast
 			// 
-			this.hsbContrast.Location = new System.Drawing.Point(660, 195);
+			this.hsbContrast.Location = new System.Drawing.Point(660, 212);
 			this.hsbContrast.Maximum = 127;
 			this.hsbContrast.Minimum = -127;
 			this.hsbContrast.Name = "hsbContrast";
@@ -142,7 +143,7 @@
 			// 
 			// hsbBrightness
 			// 
-			this.hsbBrightness.Location = new System.Drawing.Point(660, 215);
+			this.hsbBrightness.Location = new System.Drawing.Point(660, 232);
 			this.hsbBrightness.Maximum = 255;
 			this.hsbBrightness.Minimum = -255;
 			this.hsbBrightness.Name = "hsbBrightness";
@@ -152,7 +153,7 @@
 			// 
 			// hsbSaturation
 			// 
-			this.hsbSaturation.Location = new System.Drawing.Point(660, 235);
+			this.hsbSaturation.Location = new System.Drawing.Point(660, 252);
 			this.hsbSaturation.Minimum = -100;
 			this.hsbSaturation.Name = "hsbSaturation";
 			this.hsbSaturation.Size = new System.Drawing.Size(157, 20);
@@ -177,7 +178,7 @@
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(611, 198);
+			this.label1.Location = new System.Drawing.Point(611, 215);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(46, 13);
 			this.label1.TabIndex = 10;
@@ -186,7 +187,7 @@
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(601, 218);
+			this.label2.Location = new System.Drawing.Point(601, 235);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(56, 13);
 			this.label2.TabIndex = 10;
@@ -195,7 +196,7 @@
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(602, 238);
+			this.label3.Location = new System.Drawing.Point(602, 255);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(55, 13);
 			this.label3.TabIndex = 10;
@@ -208,7 +209,7 @@
 			this.cmbAlgorithm.DisplayMember = "Name";
 			this.cmbAlgorithm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cmbAlgorithm.FormattingEnabled = true;
-			this.cmbAlgorithm.Location = new System.Drawing.Point(448, 195);
+			this.cmbAlgorithm.Location = new System.Drawing.Point(660, 191);
 			this.cmbAlgorithm.Name = "cmbAlgorithm";
 			this.cmbAlgorithm.Size = new System.Drawing.Size(157, 21);
 			this.cmbAlgorithm.TabIndex = 11;
@@ -249,6 +250,7 @@
 			this.lsvFilterStack.TabIndex = 13;
 			this.lsvFilterStack.UseCompatibleStateImageBehavior = false;
 			this.lsvFilterStack.View = System.Windows.Forms.View.Details;
+			this.lsvFilterStack.SelectedIndexChanged += new System.EventHandler(this.lsvFilterStack_SelectedIndexChanged);
 			this.lsvFilterStack.DoubleClick += new System.EventHandler(this.lsvFilterStack_DoubleClick);
 			// 
 			// chName
@@ -258,7 +260,7 @@
 			// 
 			// cmdAddFilter
 			// 
-			this.cmdAddFilter.Location = new System.Drawing.Point(345, 234);
+			this.cmdAddFilter.Location = new System.Drawing.Point(442, 195);
 			this.cmdAddFilter.Name = "cmdAddFilter";
 			this.cmdAddFilter.Size = new System.Drawing.Size(104, 33);
 			this.cmdAddFilter.TabIndex = 9;
@@ -273,11 +275,22 @@
 			this.cmbFilters.DisplayMember = "Name";
 			this.cmbFilters.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cmbFilters.FormattingEnabled = true;
-			this.cmbFilters.Location = new System.Drawing.Point(182, 241);
+			this.cmbFilters.Location = new System.Drawing.Point(279, 202);
 			this.cmbFilters.Name = "cmbFilters";
 			this.cmbFilters.Size = new System.Drawing.Size(157, 21);
 			this.cmbFilters.TabIndex = 14;
 			this.cmbFilters.SelectedIndexChanged += new System.EventHandler(this.cmbFilters_SelectedIndexChanged);
+			// 
+			// cmdDelFilter
+			// 
+			this.cmdDelFilter.Enabled = false;
+			this.cmdDelFilter.Location = new System.Drawing.Point(281, 229);
+			this.cmdDelFilter.Name = "cmdDelFilter";
+			this.cmdDelFilter.Size = new System.Drawing.Size(104, 33);
+			this.cmdDelFilter.TabIndex = 9;
+			this.cmdDelFilter.Text = "Remove Filter";
+			this.cmdDelFilter.UseVisualStyleBackColor = true;
+			this.cmdDelFilter.Click += new System.EventHandler(this.cmdDelFilter_Click);
 			// 
 			// frmBadge
 			// 
@@ -291,6 +304,7 @@
 			this.Controls.Add(this.label3);
 			this.Controls.Add(this.label2);
 			this.Controls.Add(this.label1);
+			this.Controls.Add(this.cmdDelFilter);
 			this.Controls.Add(this.cmdAddFilter);
 			this.Controls.Add(this.cmdOpen);
 			this.Controls.Add(this.hsbSaturation);
@@ -339,6 +353,7 @@
 		private System.Windows.Forms.Button cmdAddFilter;
 		private System.Windows.Forms.ColumnHeader chName;
 		private System.Windows.Forms.ComboBox cmbFilters;
+		private System.Windows.Forms.Button cmdDelFilter;
 	}
 }
 

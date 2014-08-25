@@ -7,10 +7,11 @@ using System.Text;
 using System.Windows.Forms;
 using System.Linq;
 using AForge.Imaging.Filters;
+using AForge;
 
 namespace BadgeImageCreator
 {
-	public partial class frmFilterSettings : Form
+	public partial class frmFilterSettings : Form, IDisposable
 	{
 		public frmFilterSettings()
 		{
@@ -185,11 +186,28 @@ namespace BadgeImageCreator
 			if (pbSource.Image != null)
 			{
 				var sourceImage = pbSource.Image as Bitmap;
-				if ((this.FilterToModify as BaseFilter).FormatTranslations.ContainsKey(sourceImage.PixelFormat))
+				if ((this.FilterToModify as IFilterInformation).FormatTranslations.ContainsKey(sourceImage.PixelFormat))
 				{
-					pbDest.Image = this.FilterToModify.Apply(sourceImage);
+					try
+					{
+						pbDest.Image = this.FilterToModify.Apply(sourceImage);
+						lblErrorText.Text = string.Empty;
+					}
+					catch (Exception e)
+					{
+						lblErrorText.Text = e.ToString();
+					}
+				}
+				else
+				{
+					lblErrorText.Text = "Could not find: " + sourceImage.PixelFormat + " in " + (this.FilterToModify as IFilterInformation).FormatTranslations;
 				}
 			}
+		}
+
+		private void cmdApply_Click(object sender, EventArgs e)
+		{
+			this.Hide();
 		}
 	}
 }
