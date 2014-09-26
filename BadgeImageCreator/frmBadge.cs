@@ -83,7 +83,7 @@ namespace BadgeImageCreator
 			var previousFile = QuickSettings.Get["PreviousFile"];
 			if (File.Exists(previousFile))
 			{
-				var file = new FileInfo(ofdImage.FileName);
+				var file = new FileInfo(previousFile);
 				if (file.Exists)
 				{
 					pcFullImage.Image = System.Drawing.Image.FromFile(file.FullName);
@@ -163,11 +163,9 @@ namespace BadgeImageCreator
 				cc.Factor = hsbContrast.Value;
 				cc.ApplyInPlace(greyb);
 
-				var edges = new Edges();
-				edges.Divisor = 1;
-				edges.Threshold = 300;
+				var sharpen = new Sharpen();
 
-				edges.ApplyInPlace(greyb);
+				sharpen.ApplyInPlace(greyb);
 				pbInt.Image = greyb;
 
 				b = greyb;
@@ -201,7 +199,7 @@ namespace BadgeImageCreator
 				filter = new AForge.Imaging.Filters.SierraDithering();
 			}
 
-			if (AForge.Imaging.Filters.Grayscale.CommonAlgorithms.BT709.FormatTranslations.ContainsKey(b.PixelFormat))
+			if (filter.FormatTranslations.ContainsKey(b.PixelFormat))
 			{
 				var ditheredb = filter.Apply(b);
 				pbDest.Image = ditheredb;
@@ -784,6 +782,11 @@ namespace BadgeImageCreator
 				lsvFilterStack.Items.Remove(item);
 				item = null;
 			}
+		}
+
+		private void cmdSaveWif_Click(object sender, EventArgs e)
+		{
+			SaveImageToWif();
 		}
 	}
 

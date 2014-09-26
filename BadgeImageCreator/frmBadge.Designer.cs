@@ -53,6 +53,7 @@
 			this.cmdAddFilter = new System.Windows.Forms.Button();
 			this.cmbFilters = new System.Windows.Forms.ComboBox();
 			this.cmdDelFilter = new System.Windows.Forms.Button();
+			this.cmdSaveWif = new System.Windows.Forms.Button();
 			this.panMainImage.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pcFullImage)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pbInt)).BeginInit();
@@ -243,10 +244,10 @@
 			this.lsvFilterStack.GridLines = true;
 			this.lsvFilterStack.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
             listViewItem1});
-			this.lsvFilterStack.Location = new System.Drawing.Point(304, 58);
+			this.lsvFilterStack.Location = new System.Drawing.Point(333, 207);
 			this.lsvFilterStack.MultiSelect = false;
 			this.lsvFilterStack.Name = "lsvFilterStack";
-			this.lsvFilterStack.Size = new System.Drawing.Size(223, 131);
+			this.lsvFilterStack.Size = new System.Drawing.Size(223, 55);
 			this.lsvFilterStack.TabIndex = 13;
 			this.lsvFilterStack.UseCompatibleStateImageBehavior = false;
 			this.lsvFilterStack.View = System.Windows.Forms.View.Details;
@@ -292,6 +293,16 @@
 			this.cmdDelFilter.UseVisualStyleBackColor = true;
 			this.cmdDelFilter.Click += new System.EventHandler(this.cmdDelFilter_Click);
 			// 
+			// cmdSaveWif
+			// 
+			this.cmdSaveWif.Location = new System.Drawing.Point(120, 234);
+			this.cmdSaveWif.Name = "cmdSaveWif";
+			this.cmdSaveWif.Size = new System.Drawing.Size(104, 33);
+			this.cmdSaveWif.TabIndex = 9;
+			this.cmdSaveWif.Text = "Save Wif";
+			this.cmdSaveWif.UseVisualStyleBackColor = true;
+			this.cmdSaveWif.Click += new System.EventHandler(this.cmdSaveWif_Click);
+			// 
 			// frmBadge
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -306,6 +317,7 @@
 			this.Controls.Add(this.label1);
 			this.Controls.Add(this.cmdDelFilter);
 			this.Controls.Add(this.cmdAddFilter);
+			this.Controls.Add(this.cmdSaveWif);
 			this.Controls.Add(this.cmdOpen);
 			this.Controls.Add(this.hsbSaturation);
 			this.Controls.Add(this.hsbBrightness);
@@ -354,6 +366,7 @@
 		private System.Windows.Forms.ColumnHeader chName;
 		private System.Windows.Forms.ComboBox cmbFilters;
 		private System.Windows.Forms.Button cmdDelFilter;
+		private System.Windows.Forms.Button cmdSaveWif;
 	}
 }
 
