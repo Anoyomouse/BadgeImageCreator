@@ -71,108 +71,172 @@ namespace BadgeImageCreator
 					lblTitle.Top = 15 + pos * lblTitle.Height;
 					grpSettings.Controls.Add(lblTitle);
 
-					if (prop.PropertyType == typeof(byte) || prop.PropertyType == typeof(int) || prop.PropertyType == typeof(long) || prop.PropertyType == typeof(double) || prop.PropertyType == typeof(decimal))
+					if (prop.PropertyType == typeof(byte) || prop.PropertyType == typeof(short) || prop.PropertyType == typeof(int) ||
+						prop.PropertyType == typeof(long) || prop.PropertyType == typeof(double) || prop.PropertyType == typeof(decimal))
 					{
-						var hsv = new System.Windows.Forms.HScrollBar();
-						hsv.Name = "hsv" + prop.Name;
-
-						hsv.Width = 200;
-						hsv.Left = bLeft ? (grpSettings.Width / 2) - 10 - hsv.Width : grpSettings.Width - 10 - hsv.Width;
-						hsv.Top = lblTitle.Top;
-
-						if (prop.PropertyType == typeof(byte) || prop.PropertyType == typeof(int) || prop.PropertyType == typeof(long))
+						if (prop.Name == "Channel")
 						{
-							if (prop.Name == "Divisor")
-							{
-								hsv.Minimum = 1;
-							}
-							else
-							{
-								hsv.Minimum = 0;
-							}
+							var ddl = new ComboBox();
 
-							if (prop.PropertyType != typeof(byte))
-								hsv.Maximum = 500;
-							else
-								hsv.Maximum = 0xFF;
-							hsv.SmallChange = 1;
-							hsv.LargeChange = 10;
+							ddl.Name = "lbl" + prop.Name;
+							ddl.Text = prop.Name;
+							ddl.Left = lblTitle.Left + lblTitle.Width;
+							ddl.Top = 15 + pos * lblTitle.Height;
+							ddl.Width = 200;
 
-							if (prop.PropertyType == typeof(int))
+							ddl.DropDownStyle = ComboBoxStyle.DropDownList;
+
+							ddl.Items.Add("R");
+							ddl.Items.Add("G");
+							ddl.Items.Add("B");
+							ddl.Items.Add("A");
+
+							// B G R A
+							short val = (short)prop.GetValue(_filter, null);
+							if (val == 0) ddl.SelectedItem = "B";
+							if (val == 1) ddl.SelectedItem = "G";
+							if (val == 2) ddl.SelectedItem = "R";
+							if (val == 3) ddl.SelectedItem = "A";
+
+							ddl.SelectedValueChanged += (o,e) =>
 							{
-								if (prop.GetGetMethod() != null)
+								var cb = (ComboBox)o;
+								short new_channel = AForge.Imaging.RGB.R;
+								switch (cb.SelectedValue as string)
 								{
-									int newValue = (int)prop.GetValue(_filter, null);
-									if (newValue > 500)
-									{
-										hsv.Maximum = newValue;
-									}
-
-									hsv.Value = newValue;
+									case "R": new_channel = AForge.Imaging.RGB.R; break;
+									case "G": new_channel = AForge.Imaging.RGB.G; break;
+									case "B": new_channel = AForge.Imaging.RGB.B; break;
+									case "A": new_channel = AForge.Imaging.RGB.A; break;
 								}
-								hsv.Scroll += (o, e) =>
-								{
-									var sb = (HScrollBar)o;
-									prop.SetValue(_filter, sb.Value, null);
-									RefreshDest();
-								};
-							}
-							else if (prop.PropertyType == typeof(long))
-							{
-								hsv.Value = (int)prop.GetValue(_filter, null);
-								hsv.Scroll += (o, e) =>
-								{
-									var sb = (HScrollBar)o;
-									prop.SetValue(_filter, (long)sb.Value, null);
-									RefreshDest();
-								};
-							}
-							else if (prop.PropertyType == typeof(byte))
-							{
-								hsv.Value = (byte)prop.GetValue(_filter, null);
-								hsv.Scroll += (o, e) =>
-								{
-									var sb = (HScrollBar)o;
-									byte val = (byte)(sb.Value & 0xFF);
-									prop.SetValue(_filter, val, null);
-									RefreshDest();
-								};
-							}
+
+								prop.SetValue(_filter, new_channel, null);
+								RefreshDest();
+							};
+
+							grpSettings.Controls.Add(ddl);
 						}
-						else if (prop.PropertyType == typeof(double) || prop.PropertyType == typeof(decimal))
+						else
 						{
-							hsv.Minimum = -1000;
-							hsv.Maximum = 1000;
-							hsv.SmallChange = 1;
-							hsv.LargeChange = 10;
+							var hsv = new System.Windows.Forms.HScrollBar();
+							hsv.Name = "hsv" + prop.Name;
 
-							if (prop.PropertyType == typeof(double))
+							hsv.Width = 200;
+							hsv.Left = bLeft ? (grpSettings.Width / 2) - 10 - hsv.Width : grpSettings.Width - 10 - hsv.Width;
+							hsv.Top = lblTitle.Top;
+
+							if (prop.PropertyType == typeof(byte) || prop.PropertyType == typeof(short) ||
+								prop.PropertyType == typeof(int) || prop.PropertyType == typeof(long))
 							{
-								hsv.Value = (int)(((double)prop.GetValue(_filter, null)) * 100);
-								hsv.Scroll += (o, e) =>
+								if (prop.Name == "Divisor")
 								{
-									var sb = (HScrollBar)o;
-									var nv = (double)sb.Value / 100.0;
-									prop.SetValue(_filter, nv, null);
-									RefreshDest();
-								};
+									hsv.Minimum = 1;
+								}
+								else
+								{
+									hsv.Minimum = 0;
+								}
+
+								if (prop.PropertyType != typeof(byte))
+									hsv.Maximum = 500;
+								else
+									hsv.Maximum = 0xFF;
+								hsv.SmallChange = 1;
+								hsv.LargeChange = 10;
+
+								if (prop.PropertyType == typeof(int))
+								{
+									if (prop.GetGetMethod() != null)
+									{
+										int newValue = (int)prop.GetValue(_filter, null);
+										if (newValue > 500)
+										{
+											hsv.Maximum = newValue;
+										}
+
+										hsv.Value = newValue;
+									}
+									hsv.Scroll += (o, e) =>
+									{
+										var sb = (HScrollBar)o;
+										prop.SetValue(_filter, sb.Value, null);
+										RefreshDest();
+									};
+								}
+								else if (prop.PropertyType == typeof(short))
+								{
+									hsv.Value = (short)prop.GetValue(_filter, null);
+									hsv.Scroll += (o, e) =>
+									{
+										try
+										{
+											var sb = (HScrollBar)o;
+											prop.SetValue(_filter, (short)sb.Value, null);
+											RefreshDest();
+										}
+										catch (Exception ex)
+										{
+											MessageBox.Show("Error: " + ex.ToString());
+										}
+									};
+								}
+								else if (prop.PropertyType == typeof(long))
+								{
+									hsv.Value = (int)prop.GetValue(_filter, null);
+									hsv.Scroll += (o, e) =>
+									{
+										var sb = (HScrollBar)o;
+										prop.SetValue(_filter, (long)sb.Value, null);
+										RefreshDest();
+									};
+								}
+								else if (prop.PropertyType == typeof(byte))
+								{
+									hsv.Value = (byte)prop.GetValue(_filter, null);
+									hsv.Scroll += (o, e) =>
+									{
+										var sb = (HScrollBar)o;
+										byte val = (byte)(sb.Value & 0xFF);
+										prop.SetValue(_filter, val, null);
+										RefreshDest();
+									};
+								}
 							}
-							else
+							else if (prop.PropertyType == typeof(double) || prop.PropertyType == typeof(decimal))
 							{
-								hsv.Value = (int)(((decimal)prop.GetValue(_filter, null)) * 100);
-								hsv.Scroll += (o, e) =>
+								hsv.Minimum = -1000;
+								hsv.Maximum = 1000;
+								hsv.SmallChange = 1;
+								hsv.LargeChange = 10;
+
+								if (prop.PropertyType == typeof(double))
 								{
-									var sb = (HScrollBar)o;
-									var nv = (decimal)sb.Value / 100.0m;
-									prop.SetValue(_filter, nv, null);
-									RefreshDest();
-								};
+									hsv.Value = (int)(((double)prop.GetValue(_filter, null)) * 100);
+									hsv.Scroll += (o, e) =>
+									{
+										var sb = (HScrollBar)o;
+										var nv = (double)sb.Value / 100.0;
+										prop.SetValue(_filter, nv, null);
+										RefreshDest();
+									};
+								}
+								else
+								{
+									hsv.Value = (int)(((decimal)prop.GetValue(_filter, null)) * 100);
+									hsv.Scroll += (o, e) =>
+									{
+										var sb = (HScrollBar)o;
+										var nv = (decimal)sb.Value / 100.0m;
+										prop.SetValue(_filter, nv, null);
+										RefreshDest();
+									};
+								}
 							}
+
+							grpSettings.Controls.Add(hsv);
+
+							lblTitle.Left = hsv.Left - lblTitle.Width - 5;
 						}
-
-						grpSettings.Controls.Add(hsv);
-
-						lblTitle.Left = hsv.Left - lblTitle.Width - 5;
 					}
 					else if (prop.PropertyType == typeof(IntRange))
 					{
@@ -272,13 +336,26 @@ namespace BadgeImageCreator
 					}
 					else if (prop.PropertyType == typeof(AForge.Imaging.RGB))
 					{
-						Label lblTypeName = new Label();
-						lblTypeName.Name = "lbl" + prop.Name + "Type";
-						lblTypeName.AutoSize = true;
-						lblTypeName.Text = prop.PropertyType.Name;
-						lblTypeName.Left = lblTitle.Left + lblTitle.Width + 20;
-						lblTypeName.Top = lblTitle.Top;
-						grpSettings.Controls.Add(lblTypeName);
+						ColorPicker cpBox = new ColorPicker();
+						cpBox.Name = "cpBox" + prop.Name;
+						cpBox.Text = prop.PropertyType.Name;
+						cpBox.Left = lblTitle.Left + lblTitle.Width + 20;
+						cpBox.Top = lblTitle.Top;
+						cpBox.Height = lblTitle.Height;
+						cpBox.Width = 180;
+
+						var oldValue = (AForge.Imaging.RGB)prop.GetValue(_filter, null);
+						cpBox.BackColor = oldValue.Color;
+
+						cpBox.ChangeColorEvent += (o, e) =>
+						{
+							var cb = (ColorPicker)o;
+							Color c = cb.BackColor;
+							prop.SetValue(_filter, new AForge.Imaging.RGB(c), null);
+							RefreshDest();
+						};
+
+						grpSettings.Controls.Add(cpBox);
 					}
 					else
 					{

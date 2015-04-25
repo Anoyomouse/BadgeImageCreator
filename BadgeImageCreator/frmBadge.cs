@@ -538,6 +538,7 @@ namespace BadgeImageCreator
 		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private void pbDest_Click(object sender, EventArgs e)
 		{
+			sfdResult.Title = "Save result image as PNG";
 			if (sfdResult.ShowDialog(this) == DialogResult.OK)
 			{
 				var file = new FileInfo(sfdResult.FileName);
@@ -553,6 +554,7 @@ namespace BadgeImageCreator
 		/// <summary>Saves the image to wif.</summary>
 		private void SaveImageToWif()
 		{
+			sfdResult.Title = "Save result as a WIF (Convert it to 2-bit)";
 			sfdResult.DefaultExt = ".WIF";
 			if (sfdResult.ShowDialog(this) == DialogResult.OK)
 			{
