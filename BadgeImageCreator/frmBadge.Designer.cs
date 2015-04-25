@@ -59,18 +59,20 @@ namespace BadgeImageCreator
 			this.cmbFilters = new System.Windows.Forms.ComboBox();
 			this.cmdDelFilter = new System.Windows.Forms.Button();
 			this.cmdSaveWif = new System.Windows.Forms.Button();
+			this.panSimple = new System.Windows.Forms.Panel();
 			this.panMainImage.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pcFullImage)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pbInt)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pbDest)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pbSource)).BeginInit();
+			this.panSimple.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// cmdProcess
 			// 
-			this.cmdProcess.Location = new System.Drawing.Point(10, 195);
+			this.cmdProcess.Location = new System.Drawing.Point(10, 223);
 			this.cmdProcess.Name = "cmdProcess";
-			this.cmdProcess.Size = new System.Drawing.Size(104, 33);
+			this.cmdProcess.Size = new System.Drawing.Size(85, 22);
 			this.cmdProcess.TabIndex = 2;
 			this.cmdProcess.Text = "Process";
 			this.cmdProcess.UseVisualStyleBackColor = true;
@@ -85,9 +87,9 @@ namespace BadgeImageCreator
 			this.panMainImage.BackColor = System.Drawing.Color.Transparent;
 			this.panMainImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
 			this.panMainImage.Controls.Add(this.pcFullImage);
-			this.panMainImage.Location = new System.Drawing.Point(10, 276);
+			this.panMainImage.Location = new System.Drawing.Point(10, 306);
 			this.panMainImage.Name = "panMainImage";
-			this.panMainImage.Size = new System.Drawing.Size(811, 439);
+			this.panMainImage.Size = new System.Drawing.Size(799, 411);
 			this.panMainImage.TabIndex = 4;
 			// 
 			// pcFullImage
@@ -139,7 +141,7 @@ namespace BadgeImageCreator
 			// 
 			// hsbContrast
 			// 
-			this.hsbContrast.Location = new System.Drawing.Point(660, 212);
+			this.hsbContrast.Location = new System.Drawing.Point(102, 26);
 			this.hsbContrast.Maximum = 127;
 			this.hsbContrast.Minimum = -127;
 			this.hsbContrast.Name = "hsbContrast";
@@ -149,7 +151,7 @@ namespace BadgeImageCreator
 			// 
 			// hsbBrightness
 			// 
-			this.hsbBrightness.Location = new System.Drawing.Point(660, 232);
+			this.hsbBrightness.Location = new System.Drawing.Point(102, 46);
 			this.hsbBrightness.Maximum = 255;
 			this.hsbBrightness.Minimum = -255;
 			this.hsbBrightness.Name = "hsbBrightness";
@@ -159,7 +161,7 @@ namespace BadgeImageCreator
 			// 
 			// hsbSaturation
 			// 
-			this.hsbSaturation.Location = new System.Drawing.Point(660, 252);
+			this.hsbSaturation.Location = new System.Drawing.Point(102, 66);
 			this.hsbSaturation.Minimum = -100;
 			this.hsbSaturation.Name = "hsbSaturation";
 			this.hsbSaturation.Size = new System.Drawing.Size(157, 20);
@@ -168,9 +170,9 @@ namespace BadgeImageCreator
 			// 
 			// cmdOpen
 			// 
-			this.cmdOpen.Location = new System.Drawing.Point(120, 195);
+			this.cmdOpen.Location = new System.Drawing.Point(10, 195);
 			this.cmdOpen.Name = "cmdOpen";
-			this.cmdOpen.Size = new System.Drawing.Size(104, 33);
+			this.cmdOpen.Size = new System.Drawing.Size(85, 22);
 			this.cmdOpen.TabIndex = 9;
 			this.cmdOpen.Text = "Open";
 			this.cmdOpen.UseVisualStyleBackColor = true;
@@ -184,7 +186,7 @@ namespace BadgeImageCreator
 			// label1
 			// 
 			this.label1.AutoSize = true;
-			this.label1.Location = new System.Drawing.Point(611, 215);
+			this.label1.Location = new System.Drawing.Point(53, 26);
 			this.label1.Name = "label1";
 			this.label1.Size = new System.Drawing.Size(46, 13);
 			this.label1.TabIndex = 10;
@@ -193,7 +195,7 @@ namespace BadgeImageCreator
 			// label2
 			// 
 			this.label2.AutoSize = true;
-			this.label2.Location = new System.Drawing.Point(601, 235);
+			this.label2.Location = new System.Drawing.Point(43, 46);
 			this.label2.Name = "label2";
 			this.label2.Size = new System.Drawing.Size(56, 13);
 			this.label2.TabIndex = 10;
@@ -202,7 +204,7 @@ namespace BadgeImageCreator
 			// label3
 			// 
 			this.label3.AutoSize = true;
-			this.label3.Location = new System.Drawing.Point(602, 255);
+			this.label3.Location = new System.Drawing.Point(44, 66);
 			this.label3.Name = "label3";
 			this.label3.Size = new System.Drawing.Size(55, 13);
 			this.label3.TabIndex = 10;
@@ -210,14 +212,12 @@ namespace BadgeImageCreator
 			// 
 			// cmbAlgorithm
 			// 
-			this.cmbAlgorithm.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
 			this.cmbAlgorithm.DisplayMember = "Name";
 			this.cmbAlgorithm.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cmbAlgorithm.FormattingEnabled = true;
-			this.cmbAlgorithm.Location = new System.Drawing.Point(660, 191);
+			this.cmbAlgorithm.Location = new System.Drawing.Point(13, 2);
 			this.cmbAlgorithm.Name = "cmbAlgorithm";
-			this.cmbAlgorithm.Size = new System.Drawing.Size(157, 21);
+			this.cmbAlgorithm.Size = new System.Drawing.Size(238, 21);
 			this.cmbAlgorithm.TabIndex = 11;
 			this.cmbAlgorithm.SelectionChangeCommitted += new System.EventHandler(this.cmbAlgorithm_SelectionChangeCommitted);
 			// 
@@ -227,9 +227,9 @@ namespace BadgeImageCreator
 			// 
 			// cmdPreviewWIF
 			// 
-			this.cmdPreviewWIF.Location = new System.Drawing.Point(10, 234);
+			this.cmdPreviewWIF.Location = new System.Drawing.Point(11, 278);
 			this.cmdPreviewWIF.Name = "cmdPreviewWIF";
-			this.cmdPreviewWIF.Size = new System.Drawing.Size(104, 33);
+			this.cmdPreviewWIF.Size = new System.Drawing.Size(85, 22);
 			this.cmdPreviewWIF.TabIndex = 12;
 			this.cmdPreviewWIF.Text = "Preview WIF";
 			this.cmdPreviewWIF.UseVisualStyleBackColor = true;
@@ -249,10 +249,10 @@ namespace BadgeImageCreator
 			this.lsvFilterStack.GridLines = true;
 			this.lsvFilterStack.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
             listViewItem1});
-			this.lsvFilterStack.Location = new System.Drawing.Point(333, 207);
+			this.lsvFilterStack.Location = new System.Drawing.Point(101, 222);
 			this.lsvFilterStack.MultiSelect = false;
 			this.lsvFilterStack.Name = "lsvFilterStack";
-			this.lsvFilterStack.Size = new System.Drawing.Size(223, 55);
+			this.lsvFilterStack.Size = new System.Drawing.Size(319, 78);
 			this.lsvFilterStack.TabIndex = 13;
 			this.lsvFilterStack.UseCompatibleStateImageBehavior = false;
 			this.lsvFilterStack.View = System.Windows.Forms.View.Details;
@@ -266,7 +266,7 @@ namespace BadgeImageCreator
 			// 
 			// cmdAddFilter
 			// 
-			this.cmdAddFilter.Location = new System.Drawing.Point(442, 195);
+			this.cmdAddFilter.Location = new System.Drawing.Point(426, 222);
 			this.cmdAddFilter.Name = "cmdAddFilter";
 			this.cmdAddFilter.Size = new System.Drawing.Size(104, 33);
 			this.cmdAddFilter.TabIndex = 9;
@@ -276,21 +276,22 @@ namespace BadgeImageCreator
 			// 
 			// cmbFilters
 			// 
-			this.cmbFilters.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+			this.cmbFilters.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.cmbFilters.DisplayMember = "Name";
 			this.cmbFilters.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
 			this.cmbFilters.FormattingEnabled = true;
-			this.cmbFilters.Location = new System.Drawing.Point(279, 202);
+			this.cmbFilters.Location = new System.Drawing.Point(101, 195);
 			this.cmbFilters.Name = "cmbFilters";
-			this.cmbFilters.Size = new System.Drawing.Size(157, 21);
+			this.cmbFilters.Size = new System.Drawing.Size(319, 21);
 			this.cmbFilters.TabIndex = 14;
 			this.cmbFilters.SelectedIndexChanged += new System.EventHandler(this.cmbFilters_SelectedIndexChanged);
 			// 
 			// cmdDelFilter
 			// 
 			this.cmdDelFilter.Enabled = false;
-			this.cmdDelFilter.Location = new System.Drawing.Point(281, 229);
+			this.cmdDelFilter.Location = new System.Drawing.Point(426, 261);
 			this.cmdDelFilter.Name = "cmdDelFilter";
 			this.cmdDelFilter.Size = new System.Drawing.Size(104, 33);
 			this.cmdDelFilter.TabIndex = 9;
@@ -300,33 +301,42 @@ namespace BadgeImageCreator
 			// 
 			// cmdSaveWif
 			// 
-			this.cmdSaveWif.Location = new System.Drawing.Point(120, 234);
+			this.cmdSaveWif.Location = new System.Drawing.Point(10, 250);
 			this.cmdSaveWif.Name = "cmdSaveWif";
-			this.cmdSaveWif.Size = new System.Drawing.Size(104, 33);
+			this.cmdSaveWif.Size = new System.Drawing.Size(85, 22);
 			this.cmdSaveWif.TabIndex = 9;
 			this.cmdSaveWif.Text = "Save Wif";
 			this.cmdSaveWif.UseVisualStyleBackColor = true;
 			this.cmdSaveWif.Click += new System.EventHandler(this.cmdSaveWif_Click);
 			// 
+			// panSimple
+			// 
+			this.panSimple.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.panSimple.Controls.Add(this.cmbAlgorithm);
+			this.panSimple.Controls.Add(this.label3);
+			this.panSimple.Controls.Add(this.label2);
+			this.panSimple.Controls.Add(this.label1);
+			this.panSimple.Controls.Add(this.hsbContrast);
+			this.panSimple.Controls.Add(this.hsbBrightness);
+			this.panSimple.Controls.Add(this.hsbSaturation);
+			this.panSimple.Location = new System.Drawing.Point(551, 189);
+			this.panSimple.Name = "panSimple";
+			this.panSimple.Size = new System.Drawing.Size(265, 88);
+			this.panSimple.TabIndex = 15;
+			// 
 			// frmBadge
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(833, 727);
+			this.ClientSize = new System.Drawing.Size(821, 727);
+			this.Controls.Add(this.panSimple);
 			this.Controls.Add(this.cmbFilters);
 			this.Controls.Add(this.lsvFilterStack);
 			this.Controls.Add(this.cmdPreviewWIF);
-			this.Controls.Add(this.cmbAlgorithm);
-			this.Controls.Add(this.label3);
-			this.Controls.Add(this.label2);
-			this.Controls.Add(this.label1);
 			this.Controls.Add(this.cmdDelFilter);
 			this.Controls.Add(this.cmdAddFilter);
 			this.Controls.Add(this.cmdSaveWif);
 			this.Controls.Add(this.cmdOpen);
-			this.Controls.Add(this.hsbSaturation);
-			this.Controls.Add(this.hsbBrightness);
-			this.Controls.Add(this.hsbContrast);
 			this.Controls.Add(this.panMainImage);
 			this.Controls.Add(this.pbInt);
 			this.Controls.Add(this.pbDest);
@@ -341,8 +351,9 @@ namespace BadgeImageCreator
 			((System.ComponentModel.ISupportInitialize)(this.pbInt)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pbDest)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.pbSource)).EndInit();
+			this.panSimple.ResumeLayout(false);
+			this.panSimple.PerformLayout();
 			this.ResumeLayout(false);
-			this.PerformLayout();
 
 		}
 
@@ -372,6 +383,7 @@ namespace BadgeImageCreator
 		private System.Windows.Forms.ComboBox cmbFilters;
 		private System.Windows.Forms.Button cmdDelFilter;
 		private System.Windows.Forms.Button cmdSaveWif;
+		private System.Windows.Forms.Panel panSimple;
 	}
 }
 

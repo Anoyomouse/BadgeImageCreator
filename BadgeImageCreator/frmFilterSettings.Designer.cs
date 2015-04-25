@@ -71,7 +71,7 @@ namespace BadgeImageCreator
             | System.Windows.Forms.AnchorStyles.Right)));
 			this.grpSettings.Location = new System.Drawing.Point(12, 216);
 			this.grpSettings.Name = "grpSettings";
-			this.grpSettings.Size = new System.Drawing.Size(536, 97);
+			this.grpSettings.Size = new System.Drawing.Size(536, 134);
 			this.grpSettings.TabIndex = 6;
 			this.grpSettings.TabStop = false;
 			this.grpSettings.Text = "Settings";
@@ -79,17 +79,19 @@ namespace BadgeImageCreator
 			// cmdCancel
 			// 
 			this.cmdCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.cmdCancel.Location = new System.Drawing.Point(441, 319);
+			this.cmdCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+			this.cmdCancel.Location = new System.Drawing.Point(441, 356);
 			this.cmdCancel.Name = "cmdCancel";
 			this.cmdCancel.Size = new System.Drawing.Size(107, 34);
 			this.cmdCancel.TabIndex = 7;
 			this.cmdCancel.Text = "Cancel";
 			this.cmdCancel.UseVisualStyleBackColor = true;
+			this.cmdCancel.Click += new System.EventHandler(this.cmdCancel_Click);
 			// 
 			// cmdApply
 			// 
 			this.cmdApply.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.cmdApply.Location = new System.Drawing.Point(328, 319);
+			this.cmdApply.Location = new System.Drawing.Point(328, 356);
 			this.cmdApply.Name = "cmdApply";
 			this.cmdApply.Size = new System.Drawing.Size(107, 34);
 			this.cmdApply.TabIndex = 7;
@@ -112,9 +114,11 @@ namespace BadgeImageCreator
 			// 
 			// frmFilterSettings
 			// 
+			this.AcceptButton = this.cmdApply;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(560, 365);
+			this.CancelButton = this.cmdCancel;
+			this.ClientSize = new System.Drawing.Size(560, 402);
 			this.Controls.Add(this.lblErrorText);
 			this.Controls.Add(this.cmdApply);
 			this.Controls.Add(this.cmdCancel);
