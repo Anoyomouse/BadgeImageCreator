@@ -33,7 +33,6 @@ namespace BadgeImageCreator
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmBadge));
 			System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("Filer Name Here");
 			this.cmdProcess = new System.Windows.Forms.Button();
 			this.panMainImage = new System.Windows.Forms.Panel();
@@ -60,6 +59,8 @@ namespace BadgeImageCreator
 			this.cmdDelFilter = new System.Windows.Forms.Button();
 			this.cmdSaveWif = new System.Windows.Forms.Button();
 			this.panSimple = new System.Windows.Forms.Panel();
+			this.chkInvert = new System.Windows.Forms.CheckBox();
+			this.cmdReset = new System.Windows.Forms.Button();
 			this.panMainImage.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pcFullImage)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pbInt)).BeginInit();
@@ -70,9 +71,9 @@ namespace BadgeImageCreator
 			// 
 			// cmdProcess
 			// 
-			this.cmdProcess.Location = new System.Drawing.Point(10, 223);
+			this.cmdProcess.Location = new System.Drawing.Point(426, 278);
 			this.cmdProcess.Name = "cmdProcess";
-			this.cmdProcess.Size = new System.Drawing.Size(85, 22);
+			this.cmdProcess.Size = new System.Drawing.Size(104, 23);
 			this.cmdProcess.TabIndex = 2;
 			this.cmdProcess.Text = "Process";
 			this.cmdProcess.UseVisualStyleBackColor = true;
@@ -95,7 +96,7 @@ namespace BadgeImageCreator
 			// pcFullImage
 			// 
 			this.pcFullImage.Cursor = System.Windows.Forms.Cursors.Default;
-			this.pcFullImage.Image = ((System.Drawing.Image)(resources.GetObject("pcFullImage.Image")));
+			this.pcFullImage.Image = null;
 			this.pcFullImage.Location = new System.Drawing.Point(0, 0);
 			this.pcFullImage.Name = "pcFullImage";
 			this.pcFullImage.Size = new System.Drawing.Size(776, 650);
@@ -172,7 +173,7 @@ namespace BadgeImageCreator
 			// 
 			this.cmdOpen.Location = new System.Drawing.Point(10, 195);
 			this.cmdOpen.Name = "cmdOpen";
-			this.cmdOpen.Size = new System.Drawing.Size(85, 22);
+			this.cmdOpen.Size = new System.Drawing.Size(85, 30);
 			this.cmdOpen.TabIndex = 9;
 			this.cmdOpen.Text = "Open";
 			this.cmdOpen.UseVisualStyleBackColor = true;
@@ -227,9 +228,9 @@ namespace BadgeImageCreator
 			// 
 			// cmdPreviewWIF
 			// 
-			this.cmdPreviewWIF.Location = new System.Drawing.Point(11, 278);
+			this.cmdPreviewWIF.Location = new System.Drawing.Point(10, 269);
 			this.cmdPreviewWIF.Name = "cmdPreviewWIF";
-			this.cmdPreviewWIF.Size = new System.Drawing.Size(85, 22);
+			this.cmdPreviewWIF.Size = new System.Drawing.Size(85, 30);
 			this.cmdPreviewWIF.TabIndex = 12;
 			this.cmdPreviewWIF.Text = "Preview WIF";
 			this.cmdPreviewWIF.UseVisualStyleBackColor = true;
@@ -268,7 +269,7 @@ namespace BadgeImageCreator
 			// 
 			this.cmdAddFilter.Location = new System.Drawing.Point(426, 222);
 			this.cmdAddFilter.Name = "cmdAddFilter";
-			this.cmdAddFilter.Size = new System.Drawing.Size(104, 33);
+			this.cmdAddFilter.Size = new System.Drawing.Size(104, 23);
 			this.cmdAddFilter.TabIndex = 9;
 			this.cmdAddFilter.Text = "Add Filter";
 			this.cmdAddFilter.UseVisualStyleBackColor = true;
@@ -291,9 +292,9 @@ namespace BadgeImageCreator
 			// cmdDelFilter
 			// 
 			this.cmdDelFilter.Enabled = false;
-			this.cmdDelFilter.Location = new System.Drawing.Point(426, 261);
+			this.cmdDelFilter.Location = new System.Drawing.Point(426, 251);
 			this.cmdDelFilter.Name = "cmdDelFilter";
-			this.cmdDelFilter.Size = new System.Drawing.Size(104, 33);
+			this.cmdDelFilter.Size = new System.Drawing.Size(104, 23);
 			this.cmdDelFilter.TabIndex = 9;
 			this.cmdDelFilter.Text = "Remove Filter";
 			this.cmdDelFilter.UseVisualStyleBackColor = true;
@@ -301,9 +302,9 @@ namespace BadgeImageCreator
 			// 
 			// cmdSaveWif
 			// 
-			this.cmdSaveWif.Location = new System.Drawing.Point(10, 250);
+			this.cmdSaveWif.Location = new System.Drawing.Point(10, 231);
 			this.cmdSaveWif.Name = "cmdSaveWif";
-			this.cmdSaveWif.Size = new System.Drawing.Size(85, 22);
+			this.cmdSaveWif.Size = new System.Drawing.Size(85, 30);
 			this.cmdSaveWif.TabIndex = 9;
 			this.cmdSaveWif.Text = "Save Wif";
 			this.cmdSaveWif.UseVisualStyleBackColor = true;
@@ -312,6 +313,8 @@ namespace BadgeImageCreator
 			// panSimple
 			// 
 			this.panSimple.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+			this.panSimple.Controls.Add(this.cmdReset);
+			this.panSimple.Controls.Add(this.chkInvert);
 			this.panSimple.Controls.Add(this.cmbAlgorithm);
 			this.panSimple.Controls.Add(this.label3);
 			this.panSimple.Controls.Add(this.label2);
@@ -321,8 +324,29 @@ namespace BadgeImageCreator
 			this.panSimple.Controls.Add(this.hsbSaturation);
 			this.panSimple.Location = new System.Drawing.Point(551, 189);
 			this.panSimple.Name = "panSimple";
-			this.panSimple.Size = new System.Drawing.Size(265, 88);
+			this.panSimple.Size = new System.Drawing.Size(265, 105);
 			this.panSimple.TabIndex = 15;
+			// 
+			// chkInvert
+			// 
+			this.chkInvert.AutoSize = true;
+			this.chkInvert.Location = new System.Drawing.Point(102, 85);
+			this.chkInvert.Name = "chkInvert";
+			this.chkInvert.Size = new System.Drawing.Size(53, 17);
+			this.chkInvert.TabIndex = 12;
+			this.chkInvert.Text = "Invert";
+			this.chkInvert.UseVisualStyleBackColor = true;
+			this.chkInvert.CheckedChanged += new System.EventHandler(this.chkInvert_CheckedChanged);
+			// 
+			// cmdReset
+			// 
+			this.cmdReset.Location = new System.Drawing.Point(179, 85);
+			this.cmdReset.Name = "cmdReset";
+			this.cmdReset.Size = new System.Drawing.Size(79, 20);
+			this.cmdReset.TabIndex = 13;
+			this.cmdReset.Text = "Reset";
+			this.cmdReset.UseVisualStyleBackColor = true;
+			this.cmdReset.Click += new System.EventHandler(this.cmdReset_Click);
 			// 
 			// frmBadge
 			// 
@@ -384,6 +408,8 @@ namespace BadgeImageCreator
 		private System.Windows.Forms.Button cmdDelFilter;
 		private System.Windows.Forms.Button cmdSaveWif;
 		private System.Windows.Forms.Panel panSimple;
+		private System.Windows.Forms.CheckBox chkInvert;
+		private System.Windows.Forms.Button cmdReset;
 	}
 }
 

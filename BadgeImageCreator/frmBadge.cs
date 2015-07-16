@@ -112,52 +112,76 @@ namespace BadgeImageCreator
 				return;
 			}
 
+			if (pcFullImage.Image == null)
+			{
+				return;
+			}
+
+
 			Bitmap b = new Bitmap(pbSource.Width, pbSource.Height);
 			Graphics g = Graphics.FromImage(b);
+			g.Clear(Color.White);
 			g.DrawImage(pcFullImage.Image, new Rectangle(0, 0, pbSource.Width, pbSource.Height), _selection.X, _selection.Y, _selection.Width, _selection.Height, GraphicsUnit.Pixel);
 			g.Dispose();
 
-			if (filterStack.Count == 0)
+			pbSource.Image = b;
+
+			if (filterStack.Count != 0)
 			{
-				var sc = new SaturationCorrection();
+				b = filterStack.Apply(b);
+			}
+
+			var sc = new SaturationCorrection();
+			if (sc.FormatTranslations.ContainsKey(b.PixelFormat))
+			{
 				sc.AdjustValue = hsbSaturation.Value / 100.0f;
 				// apply the filter
 				sc.ApplyInPlace(b);
+			}
 
-				pbSource.Image = b;
-
-				var greyb = AForge.Imaging.Filters.Grayscale.CommonAlgorithms.BT709.Apply(b);
-
-				var bc = new BrightnessCorrection();
-				bc.AdjustValue = hsbBrightness.Value;
-				bc.ApplyInPlace(greyb);
-
-				var cc = new ContrastCorrection();
-				cc.Factor = hsbContrast.Value;
-				cc.ApplyInPlace(greyb);
-
-				var sharpen = new Sharpen();
-
-				sharpen.ApplyInPlace(greyb);
-				pbInt.Image = greyb;
-
-				b = greyb;
+			Bitmap greyb = null;
+			if (AForge.Imaging.Filters.Grayscale.CommonAlgorithms.BT709.FormatTranslations.ContainsKey(b.PixelFormat))
+			{
+				greyb = AForge.Imaging.Filters.Grayscale.CommonAlgorithms.BT709.Apply(b);
 			}
 			else
 			{
-				b = filterStack.Apply(b);
-
-				if (AForge.Imaging.Filters.Grayscale.CommonAlgorithms.BT709.FormatTranslations.ContainsKey(b.PixelFormat))
-				{
-					b = AForge.Imaging.Filters.Grayscale.CommonAlgorithms.BT709.Apply(b);
-				}
-				else
-				{
-					this.Text = "Cannot convert to greyscale";
-				}
-
-				pbInt.Image = b;
+				this.Text = "Cannot convert to greyscale";
+				greyb = b;
 			}
+
+			var bc = new BrightnessCorrection();
+			if (bc.FormatTranslations.ContainsKey(b.PixelFormat))
+			{
+				bc.AdjustValue = hsbBrightness.Value;
+				bc.ApplyInPlace(greyb);
+			}
+
+			var cc = new ContrastCorrection();
+			if (cc.FormatTranslations.ContainsKey(b.PixelFormat))
+			{
+				cc.Factor = hsbContrast.Value;
+				cc.ApplyInPlace(greyb);
+			}
+
+			if (filterStack.Count == 0)
+			{
+				var sharpen = new Sharpen();
+				if (sharpen.FormatTranslations.ContainsKey(b.PixelFormat))
+				{
+					sharpen.ApplyInPlace(greyb);
+				}
+			}
+
+			if (chkInvert.Checked)
+			{
+				var invert = new Invert();
+				invert.ApplyInPlace(greyb);
+			}
+
+			pbInt.Image = greyb;
+
+			b = greyb;
 
 			//BaseInPlacePartialFilter filter = new AForge.Imaging.Filters.FloydSteinbergDithering();
 			BaseInPlacePartialFilter filter = null;
@@ -564,6 +588,8 @@ namespace BadgeImageCreator
 					file.Delete();
 				}
 
+				this.Redraw();
+
 				Bitmap bitmap = pbDest.Image as Bitmap;
 				var fileStream = new BinaryWriter(file.OpenWrite());
 
@@ -578,7 +604,9 @@ namespace BadgeImageCreator
 						byte pixelByte = 0;
 						for (int bit_i = 0; bit_i < 8; bit_i ++)
 						{
-							var bit = bitmap.GetPixel(i + bit_i, j) != Color.White;
+							var pixelColor = bitmap.GetPixel(i + bit_i, j);
+							var bit = pixelColor.R < 100;
+
 							pixelByte |= (byte)((bit ? 1 : 0) << bit_i);
 						}
 						fileStream.Write(pixelByte);
@@ -671,6 +699,8 @@ namespace BadgeImageCreator
 			lsvFilterStack.Items.Add(lvi);
 
 			filterStack.Add(filter);
+
+			this.Redraw();
 		}
 
 		/// <summary>
@@ -688,6 +718,7 @@ namespace BadgeImageCreator
 		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		private void lsvFilterStack_DoubleClick(object sender, EventArgs e)
 		{
+			cmdProcess.PerformClick();
 			if (lsvFilterStack.SelectedItems.Count > 0)
 			{
 				var item = lsvFilterStack.SelectedItems[0];
@@ -765,11 +796,31 @@ namespace BadgeImageCreator
 
 				item = null;
 			}
+			this.Redraw();
 		}
 
 		private void cmdSaveWif_Click(object sender, EventArgs e)
 		{
 			SaveImageToWif();
+		}
+
+		private void chkInvert_CheckedChanged(object sender, EventArgs e)
+		{
+			cmdProcess.PerformClick();
+		}
+
+		private void cmdReset_Click(object sender, EventArgs e)
+		{
+			hsbContrast.Value = 0;
+			hsbBrightness.Value = 0;
+			hsbSaturation.Value = 0;
+			chkInvert.Checked = false;
+			cmdProcess.PerformClick();
+		}
+
+		public void Redraw()
+		{
+			cmdProcess.PerformClick();
 		}
 	}
 

@@ -9,3 +9,11 @@ It then allows you to add in filters to sharpen up the image before writing it o
 
 The program is written for the BADGEr e-ink badge from Wyolum
  - http://wyolum.com/projects/badger/
+-----------
+This uses the AForge.NET Imaging library for processing.
+
+You can download this from:
+ - http://www.aforgenet.com/framework/downloads.html
+
+Version as of this commit is 2.2.5, which is what this has been tested with.
+

@@ -411,11 +411,19 @@ namespace BadgeImageCreator
 
 		private void cmdApply_Click(object sender, EventArgs e)
 		{
+			if (this.ParentForm is frmBadge)
+			{
+				(this.ParentForm as frmBadge).Redraw();
+			}
 			this.Hide();
 		}
 
 		private void cmdCancel_Click(object sender, EventArgs e)
 		{
+			if (this.ParentForm is frmBadge)
+			{
+				(this.ParentForm as frmBadge).Redraw();
+			}
 			this.Hide();
 		}
 	}
