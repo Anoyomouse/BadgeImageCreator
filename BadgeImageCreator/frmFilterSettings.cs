@@ -426,5 +426,10 @@ namespace BadgeImageCreator
 			}
 			this.Hide();
 		}
-	}
+
+        private void frmFilterSettings_Load(object sender, EventArgs e)
+        {
+
+        }
+    }
 }

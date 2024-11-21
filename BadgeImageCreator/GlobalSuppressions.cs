@@ -1,0 +1,42 @@
+// This file is used by Code Analysis to maintain SuppressMessage
+// attributes that are applied to this project.
+// Project-level suppressions either have no target or are given
+// a specific target and scoped to a namespace, type, member, etc.
+
+using System.Diagnostics.CodeAnalysis;
+
+[assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>", Scope = "member", Target = "~M:BadgeImageCreator.ColorPicker.cmdDialog_Click(System.Object,System.EventArgs)")]
+[assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>", Scope = "member", Target = "~M:BadgeImageCreator.ColorPicker.OnBackColorChanged(System.EventArgs)")]
+[assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>", Scope = "member", Target = "~M:BadgeImageCreator.frmBadge.chkInvert_CheckedChanged(System.Object,System.EventArgs)")]
+[assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>", Scope = "member", Target = "~M:BadgeImageCreator.frmBadge.cmbAlgorithm_SelectionChangeCommitted(System.Object,System.EventArgs)")]
+[assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>", Scope = "member", Target = "~M:BadgeImageCreator.frmBadge.cmdAddFilter_Click(System.Object,System.EventArgs)")]
+[assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>", Scope = "member", Target = "~M:BadgeImageCreator.frmBadge.cmdDelFilter_Click(System.Object,System.EventArgs)")]
+[assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>", Scope = "member", Target = "~M:BadgeImageCreator.frmBadge.cmdOpen_Click(System.Object,System.EventArgs)")]
+[assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>", Scope = "member", Target = "~M:BadgeImageCreator.frmBadge.cmdPreviewWIF_Click(System.Object,System.EventArgs)")]
+[assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>", Scope = "member", Target = "~M:BadgeImageCreator.frmBadge.cmdProcess_Click(System.Object,System.EventArgs)")]
+[assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>", Scope = "member", Target = "~M:BadgeImageCreator.frmBadge.cmdReset_Click(System.Object,System.EventArgs)")]
+[assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>", Scope = "member", Target = "~M:BadgeImageCreator.frmBadge.frmBadgeCreator_Load(System.Object,System.EventArgs)")]
+[assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>", Scope = "member", Target = "~M:BadgeImageCreator.frmBadge.LoadDitheringModes")]
+[assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>", Scope = "member", Target = "~M:BadgeImageCreator.frmBadge.LoadFilters")]
+[assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>", Scope = "member", Target = "~M:BadgeImageCreator.frmBadge.LoadOldSettings")]
+[assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>", Scope = "member", Target = "~M:BadgeImageCreator.frmBadge.LoadWifImage(System.IO.FileInfo)~System.Drawing.Bitmap")]
+[assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>", Scope = "member", Target = "~M:BadgeImageCreator.frmBadge.lsvFilterStack_DoubleClick(System.Object,System.EventArgs)")]
+[assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>", Scope = "member", Target = "~M:BadgeImageCreator.frmBadge.lsvFilterStack_SelectedIndexChanged(System.Object,System.EventArgs)")]
+[assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>", Scope = "member", Target = "~M:BadgeImageCreator.frmBadge.pbDest_Click(System.Object,System.EventArgs)")]
+[assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>", Scope = "member", Target = "~M:BadgeImageCreator.frmBadge.pcFullImage_Paint(System.Object,System.Windows.Forms.PaintEventArgs)")]
+[assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>", Scope = "member", Target = "~M:BadgeImageCreator.frmBadge.pictureBox1_MouseDown(System.Object,System.Windows.Forms.MouseEventArgs)")]
+[assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>", Scope = "member", Target = "~M:BadgeImageCreator.frmBadge.pictureBox1_MouseMove(System.Object,System.Windows.Forms.MouseEventArgs)")]
+[assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>", Scope = "member", Target = "~M:BadgeImageCreator.frmBadge.pictureBox1_MouseUp(System.Object,System.Windows.Forms.MouseEventArgs)")]
+[assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>", Scope = "member", Target = "~M:BadgeImageCreator.frmBadge.Redraw")]
+[assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>", Scope = "member", Target = "~M:BadgeImageCreator.frmBadge.RefreshImage(System.Object,System.EventArgs)")]
+[assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>", Scope = "member", Target = "~M:BadgeImageCreator.frmBadge.SaveImageToWif")]
+[assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>", Scope = "member", Target = "~M:BadgeImageCreator.frmBadge.SaveSettings")]
+[assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>", Scope = "member", Target = "~M:BadgeImageCreator.frmFilterSettings.cmdApply_Click(System.Object,System.EventArgs)")]
+[assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>", Scope = "member", Target = "~M:BadgeImageCreator.frmFilterSettings.cmdCancel_Click(System.Object,System.EventArgs)")]
+[assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>", Scope = "member", Target = "~M:BadgeImageCreator.frmFilterSettings.RefreshDest")]
+[assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>", Scope = "member", Target = "~M:BadgeImageCreator.frmPreviewWif.cmdClose_Click(System.Object,System.EventArgs)")]
+[assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>", Scope = "member", Target = "~M:BadgeImageCreator.Program.Main")]
+[assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>", Scope = "member", Target = "~M:BadgeImageCreator.QuickSettings.LoadSavedData")]
+[assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>", Scope = "member", Target = "~M:BadgeImageCreator.QuickSettings.SaveSettings")]
+[assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>", Scope = "member", Target = "~P:BadgeImageCreator.frmFilterSettings.FilterToModify")]
+[assembly: SuppressMessage("Interoperability", "CA1416:Validate platform compatibility", Justification = "<Pending>", Scope = "member", Target = "~P:BadgeImageCreator.frmPreviewWif.PreviewImage")]

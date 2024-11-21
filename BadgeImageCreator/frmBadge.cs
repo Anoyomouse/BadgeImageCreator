@@ -29,6 +29,9 @@ namespace BadgeImageCreator
 			LoadFilters();
 		}
 
+		public static short EPDWidth = 264;
+		public static short EPDHeight = 176;
+
 		/// <summary>Loads the filters.</summary>
 		private void LoadFilters()
 		{
@@ -190,7 +193,7 @@ namespace BadgeImageCreator
 			{
 				filter = cmbAlgorithm.SelectedItem as AForge.Imaging.Filters.BaseInPlacePartialFilter;
 			}
-			
+
 			if (filter == null)
 			{
 				filter = new AForge.Imaging.Filters.SierraDithering();
@@ -211,13 +214,14 @@ namespace BadgeImageCreator
 		/// <summary>Populates the dithering modes dropdown with available dithering modes.</summary>
 		private void LoadDitheringModes()
 		{
-			List<BaseInPlacePartialFilter> filters = new List<BaseInPlacePartialFilter>();
-			
-			filters.Add(new BurkesDithering());
-			filters.Add(new FloydSteinbergDithering());
-			filters.Add(new JarvisJudiceNinkeDithering());
-			filters.Add(new SierraDithering());
-			filters.Add(new StuckiDithering());
+			List<BaseInPlacePartialFilter> filters =
+            [
+                new BurkesDithering(),
+                new FloydSteinbergDithering(),
+                new JarvisJudiceNinkeDithering(),
+                new SierraDithering(),
+                new StuckiDithering(),
+            ];
 
 			cmbAlgorithm.Items.Clear();
 			cmbAlgorithm.Items.AddRange(filters.ToArray());
@@ -347,8 +351,8 @@ namespace BadgeImageCreator
 		/// <param name="e">The <see cref="MouseEventArgs"/> instance containing the event data.</param>
 		private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
 		{
-			float ratiow = 176f / 264f;
-			float ratioh = 264f / 176f;
+			float ratiow = (float)EPDHeight / EPDWidth;
+			float ratioh = (float)EPDWidth / EPDHeight;
 
 			// Update the actual size of the selection:
 			if (_state == BoxState.Placing)
@@ -593,7 +597,7 @@ namespace BadgeImageCreator
 				Bitmap bitmap = pbDest.Image as Bitmap;
 				var fileStream = new BinaryWriter(file.OpenWrite());
 
-				short width = 264, height = 176;
+				short width = EPDWidth, height = EPDHeight;
 
 				fileStream.Write(height);
 				fileStream.Write(width);
@@ -626,7 +630,7 @@ namespace BadgeImageCreator
 			{
 				var fileStream = new BinaryReader(file.OpenRead());
 
-				short width = 264, height = 176;
+				short width, height;
 
 				height = fileStream.ReadInt16();
 				width = fileStream.ReadInt16();
